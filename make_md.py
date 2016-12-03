@@ -45,7 +45,13 @@ def main(args):
 						doc += '#### Description:\n' + '* ' + desc + '\n\n'
 						doc += '#### Parameters:\n' 
 					for p in params:
-						doc += '* ' + p + '\n'
+						paren1 = p.index('(')
+						paren2 = p.index(')')
+						p_name = p[:paren1-1]
+						p_type = p[paren1:paren2+1]
+						p_rest = p[paren2+1:]
+						doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n'
+
 					doc += '\n'
 					func = ''
 					desc = ''
