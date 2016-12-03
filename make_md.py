@@ -18,7 +18,7 @@ def main(args):
 	fnames = args.fnames
 	fnames = fnames.rstrip()
 	fnames = fnames.split(',')
-	doc = ''
+	doc = '# kn_tools\nKim Nguyen\'s tools for Wang Lab, includes tools for plotting and data management\n'
 	for fname in fnames:
 		try:
 			f = open(fname,'r')
@@ -26,7 +26,7 @@ def main(args):
 			print fname, 'could not be opened.'
 			break
 
-		doc += '# ' + fname + '\n'
+		doc += '## ' + fname + '\n'
 
 		in_desc = False
 		func = ''
@@ -41,9 +41,9 @@ def main(args):
 					in_desc = not in_desc
 				if line.find('def ') == 0:
 					if func != '':
-						doc += '## ' + func + '()\n'
-						doc += '### Description:\n' + '* ' + desc + '\n\n'
-						doc += '### Parameters:\n' 
+						doc += '### ' + func + '()\n'
+						doc += '#### Description:\n' + '* ' + desc + '\n\n'
+						doc += '#### Parameters:\n' 
 					for p in params:
 						doc += '* ' + p + '\n'
 					doc += '\n'
