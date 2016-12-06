@@ -67,7 +67,7 @@ def adj_df(df,mef,p_c,p_m):
     types = ['cyt','mem','ins',]
     cols = [mef + '_' + t for t in types]
 
-    for index,row in test_df.iterrows():
+    for index,row in df.iterrows():
         c = float(row.get_value(cols[0]))
         m = float(row.get_value(cols[1]))
         i = float(row.get_value(cols[2]))
