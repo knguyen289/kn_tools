@@ -25,6 +25,15 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
 
+### text_to_df()
+#### Description:
+* Converts a text file that is tab delimited with first row being header to Pandas DataFrame
+
+#### Parameters:
+* **filename:** *(str)* The location of the text file
+
+* **index:** *(str)* The column that can be used as an index [Optional]
+
 ## ternary_tools/ternary_tools.py
 
 ### get_mag()
@@ -106,4 +115,31 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **t_suff:** *(str)* Suffix of the column in info_df for top vertex data [Optional]
 * **l_suff:** *(str)* Suffix of the column in info_df for left vertex data [Optional]
 * **r_suff:** *(str)* Suffix of the column in info_df for right vertex data [Optional]
+
+### plot_dyn_ternary()
+#### Description:
+* Plots a ternary plot
+
+#### Parameters:
+* **dyn_points:** *(list of lists)* Points from get_points_dyn
+
+* **title:** *(str)* Title of the plot
+
+* **fig:** *(Matplotlib Figure)* Figure to plot on [Optional]
+
+* **ax:** *(Matplotlib Axis)* Axis to plot on [Optional]
+
+* **t_scale:** *(float)* Text scale up or down [Optional]
+
+* **cmap:** *(str)* Matplotlib colormap [Optional]
+
+* **location:** *(str)* Where the plot should be saved, if it is to be saved [Optional]
+
+* **t:** *(str)* Title of the top vertex [Optional]
+
+* **l:** *(str)* Title of the left vertex [Optional]
+
+* **r:** *(str)* Title of the right vertex [Optional]
+
+* **spec_lab:** *(str)* Label for the angle spectrum [Optional]
 

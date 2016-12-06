@@ -66,6 +66,17 @@ def main(args):
 						pass
 					elif func != '' and desc != '' and param:
 						params.append(line)
+		if func != '':
+			doc += '### ' + func + '()\n'
+			doc += '#### Description:\n' + '* ' + desc + '\n\n'
+			doc += '#### Parameters:\n' 
+		for p in params:
+			paren1 = p.index('(')
+			paren2 = p.index(')')
+			p_name = p[:paren1-1]
+			p_type = p[paren1:paren2+1]
+			p_rest = p[paren2+1:]
+			doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n\n'
 	try:
 		f = open(args.output,'w')
 	except:
