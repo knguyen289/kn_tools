@@ -37,6 +37,11 @@ def redact_df(df,columns):
     new_df.index = ind
     return new_df
 
+def get_certain_mef(df,mef):
+    types = ['cyt','mem','ins']
+    cs = [mef + '_' + t for t in types]
+    return redact_df(df,cs)
+
 def text_to_df(filename,index=None):
     """Converts a text file that is tab delimited with first row being header to Pandas DataFrame
 

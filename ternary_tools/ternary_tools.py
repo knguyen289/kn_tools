@@ -39,6 +39,45 @@ def get_angle(x_vals,y_vals):
         return 180 + a
     return 360 + a
 
+def exp_err_adj(c,m,i,p_c,p_m):
+    """Experimental error adjustment
+    
+    Parameters:
+        c = (float) Cytosolic experimental value
+        m = (float) Membrane experimental value
+        i = (float) Insoluble experimental value
+        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+    adj_c = c/p_c
+    adj_m = m/p_m + (p_c-1)*adj_c
+    adj_i = c + m + i - adj_c - adj_m
+
+    return [adj_c,adj_m,adj_i]
+
+def adj_df(df,mef,p_c,p_m):
+    """Adjusts the df for experimental extraction error
+    
+    Parameters:
+        df: (Pandas DataFrame) The experimentally derived DataFrame
+        mef: (str) The MEF or prefix of columns [with suffix _ins and the like]
+        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+    return_df = copy.deepcopy(df)
+    types = ['cyt','mem','ins',]
+    cols = [mef + '_' + t for t in types]
+
+    for index,row in test_df.iterrows():
+        c = float(row.get_value(cols[0]))
+        m = float(row.get_value(cols[1]))
+        i = float(row.get_value(cols[2]))
+        c,m,i = exp_err_adj(c,m,i,p_c,p_m)
+
+        return_df.loc[index,cols[0]] = c
+        return_df.loc[index,cols[1]] = m
+        return_df.loc[index,cols[2]] = i
+        
+    return return_df
+
 def get_points(info_df,top_col,left_col,right_col):
     """Gets the euclidean coordinates of the ternary plot points along with the ordered gene names
     
@@ -62,14 +101,18 @@ def get_points(info_df,top_col,left_col,right_col):
         l = float(row.get_value(left_col))
         r = float(row.get_value(right_col))
         total = t + l + r
+
         if min(t,l,r) != 0:
             t /= total
             l /= total
             r /= total
             row_sum = [top[0]*t + left[0]*l + right[0]*r,
                        top[1]*t + left[1]*l + right[1]*r]
-            points.append(row_sum)
-            genes.append(index)
+            if row_sum[1] > -0.5:
+                if row_sum[1] < (3**0.5)*row_sum[0] + 1:
+                    if row_sum[1] < -(3**0.5)*row_sum[0] + 1:
+                        points.append(row_sum)
+                        genes.append(index)
             
     all_x = [item[0] for item in points]
     all_y = [item[1] for item in points]
@@ -79,8 +122,7 @@ def plot_ternary(data_specs,title,fig=None,ax=None,t_scale=1,location=None,t=r'M
     """Plots a ternary plot
 
     Parameters:
-        data_specs: (list of dictionaries) Has details about each data to be plotted
-                    keys are 'Data','Color','Label'
+        data_specs: (list of dictionaries) Has details about each data to be plotted keys are 'Data','Color','Label'
         title: (str) Title of the plot
         fig: (Matplotlib Figure) Figure to plot on [Optional]
         ax: (Matplotlib Axis) Axis to plot on [Optional]
