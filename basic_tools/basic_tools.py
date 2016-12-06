@@ -38,6 +38,11 @@ def redact_df(df,columns):
     return new_df
 
 def get_certain_mef(df,mef):
+    """Get certain mef or columns from a df that includes cytosolic, membrane, insoluble data
+
+    Parameters:
+        df: (Pandas DataFrame) The original DataFrame
+        mef: (str) The name of the mef, prefix before _cyt, _mem, _ins"""
     types = ['cyt','mem','ins']
     cs = [mef + '_' + t for t in types]
     return redact_df(df,cs)
@@ -48,9 +53,6 @@ def text_to_df(filename,index=None):
     Parameters:
         filename: (str) The location of the text file
         index: (str) The column that can be used as an index [Optional]
-
-    Returns:
-        df: (Pandas DataFrame) The converted DataFrame
     """
     f = open(filename,'r')
     data = []

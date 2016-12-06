@@ -20,9 +20,10 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ### get_certain_mef()
 #### Description:
-* 
+* Get certain mef or columns from a df that includes cytosolic, membrane, insoluble data
 
 #### Parameters:
+* **df:** *(Pandas DataFrame)* The original DataFrame
 
 ## ternary_tools/ternary_tools.py
 
