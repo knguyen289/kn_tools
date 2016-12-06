@@ -1,5 +1,5 @@
 #Copy paste into terminal:
-#python make_doc.py -fnames basic_tools/basic_tools.py,ternary_tools/ternary_tools.py -o summary.txt
+#python make_md.py -fnames basic_tools/basic_tools.py,ternary_tools/ternary_tools.py -o README.md
 
 import argparse
 import os

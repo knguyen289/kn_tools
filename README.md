@@ -18,6 +18,12 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **df:** *(Pandas DataFrame)* The original DataFrame
 * **indexes:** *(list of str)* The list of column names
 
+### get_certain_mef()
+#### Description:
+* 
+
+#### Parameters:
+
 ## ternary_tools/ternary_tools.py
 
 ### get_mag()
@@ -35,6 +41,25 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **x_vals:** *(list)* [x_0,x_1]
 * **y_vals:** *(list)* [y_0,y_1]
+
+### exp_err_adj()
+#### Description:
+* Experimental error adjustment
+
+#### Parameters:
+* **c =** *(float)* Cytosolic experimental value
+* **m =** *(float)* Membrane experimental value
+* **i =** *(float)* Insoluble experimental value
+* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
+### adj_df()
+#### Description:
+* Adjusts the df for experimental extraction error
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The experimentally derived DataFrame
+* **mef:** *(str)* The MEF or prefix of columns [with suffix _ins and the like]
+* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
 
 ### get_points()
 #### Description:
