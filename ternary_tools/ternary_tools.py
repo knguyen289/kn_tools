@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
 import math
+import copy
 
 def get_mag(x_vals,y_vals):
     """Gets the magnitude of a vector
