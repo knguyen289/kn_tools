@@ -40,44 +40,7 @@ def get_angle(x_vals,y_vals):
         return 180 + a
     return 360 + a
 
-def exp_err_adj(c,m,i,p_c,p_m):
-    """Experimental error adjustment
-    
-    Parameters:
-        c = (float) Cytosolic experimental value
-        m = (float) Membrane experimental value
-        i = (float) Insoluble experimental value
-        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
-        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
-    adj_c = c/p_c
-    adj_m = m/p_m + (p_c-1)*adj_c
-    adj_i = c + m + i - adj_c - adj_m
 
-    return [adj_c,adj_m,adj_i]
-
-def adj_df(df,mef,p_c,p_m):
-    """Adjusts the df for experimental extraction error
-    
-    Parameters:
-        df: (Pandas DataFrame) The experimentally derived DataFrame
-        mef: (str) The MEF or prefix of columns [with suffix _ins and the like]
-        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
-        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
-    return_df = copy.deepcopy(df)
-    types = ['cyt','mem','ins',]
-    cols = [mef + '_' + t for t in types]
-
-    for index,row in df.iterrows():
-        c = float(row.get_value(cols[0]))
-        m = float(row.get_value(cols[1]))
-        i = float(row.get_value(cols[2]))
-        c,m,i = exp_err_adj(c,m,i,p_c,p_m)
-
-        return_df.loc[index,cols[0]] = c
-        return_df.loc[index,cols[1]] = m
-        return_df.loc[index,cols[2]] = i
-        
-    return return_df
 
 def get_points(info_df,top_col,left_col,right_col):
     """Gets the euclidean coordinates of the ternary plot points along with the ordered gene names

@@ -47,6 +47,45 @@ def get_certain_mef(df,mef):
     cs = [mef + '_' + t for t in types]
     return redact_df(df,cs)
 
+def exp_err_adj(c,m,i,p_c,p_m):
+    """Experimental error adjustment
+    
+    Parameters:
+        c = (float) Cytosolic experimental value
+        m = (float) Membrane experimental value
+        i = (float) Insoluble experimental value
+        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+    adj_c = c/p_c
+    adj_m = m/p_m + (p_c-1)*adj_c
+    adj_i = c + m + i - adj_c - adj_m
+
+    return [adj_c,adj_m,adj_i]
+
+def adj_df(df,mef,p_c,p_m):
+    """Adjusts the df for experimental extraction error
+    
+    Parameters:
+        df: (Pandas DataFrame) The experimentally derived DataFrame
+        mef: (str) The MEF or prefix of columns [with suffix _ins and the like]
+        p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+    return_df = copy.deepcopy(df)
+    types = ['cyt','mem','ins',]
+    cols = [mef + '_' + t for t in types]
+
+    for index,row in df.iterrows():
+        c = float(row.get_value(cols[0]))
+        m = float(row.get_value(cols[1]))
+        i = float(row.get_value(cols[2]))
+        c,m,i = exp_err_adj(c,m,i,p_c,p_m)
+
+        return_df.loc[index,cols[0]] = c
+        return_df.loc[index,cols[1]] = m
+        return_df.loc[index,cols[2]] = i
+        
+    return return_df
+    
 def text_to_df(filename,index=None):
     """Converts a text file that is tab delimited with first row being header to Pandas DataFrame
 
