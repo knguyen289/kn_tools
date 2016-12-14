@@ -25,6 +25,25 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
 
+### exp_err_adj()
+#### Description:
+* Experimental error adjustment
+
+#### Parameters:
+* **c =** *(float)* Cytosolic experimental value
+* **m =** *(float)* Membrane experimental value
+* **i =** *(float)* Insoluble experimental value
+* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
+### adj_df()
+#### Description:
+* Adjusts the df for experimental extraction error
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The experimentally derived DataFrame
+* **mef:** *(str)* The MEF or prefix of columns [with suffix _ins and the like]
+* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
 ### text_to_df()
 #### Description:
 * Converts a text file that is tab delimited with first row being header to Pandas DataFrame
@@ -51,25 +70,6 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **x_vals:** *(list)* [x_0,x_1]
 * **y_vals:** *(list)* [y_0,y_1]
-
-### exp_err_adj()
-#### Description:
-* Experimental error adjustment
-
-#### Parameters:
-* **c =** *(float)* Cytosolic experimental value
-* **m =** *(float)* Membrane experimental value
-* **i =** *(float)* Insoluble experimental value
-* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
-
-### adj_df()
-#### Description:
-* Adjusts the df for experimental extraction error
-
-#### Parameters:
-* **df:** *(Pandas DataFrame)* The experimentally derived DataFrame
-* **mef:** *(str)* The MEF or prefix of columns [with suffix _ins and the like]
-* **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
 
 ### get_points()
 #### Description:
