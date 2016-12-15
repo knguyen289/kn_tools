@@ -1,5 +1,7 @@
 import pandas as pd
 import copy
+import numpy as np 
+from scipy.spatial.distance import euclidean
 
 def filter_df(df,indexes):
     """Returns a dataframe that includes info from indicated indexes
