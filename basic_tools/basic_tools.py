@@ -111,3 +111,33 @@ def text_to_df(filename,index=None):
 
     return df
 
+def trieuclid(df1,df2,d3):
+    """Gets a list of the perimeters of the triangle created by the gene locations of each gene in each of df1,2,3...Returns the list of distances and the ordered list of genes...MUST HAVE THE SAME MEF NAME
+
+    Parameters:
+        df1: (Pandas Dataframe) The first MEF DataFrame
+        df2: (Pandas Dataframe) The second MEF DataFrame
+        df3: (Pandas Dataframe) The third MEF DataFrame"""
+    genes = list(df1.index)
+    mef = df1.columns[0].split('_')[0] + '_' + df1.columns[0].split('_')[1]
+    c = mef + '_cyt'
+    m = mef + '_mem'
+    i = mef + '_ins'
+    
+    incl_dist = []
+    incl_genes = []
+    for g in genes:
+        vecs = []
+        for df in [df1,df2,df3]:
+            temp = [df.loc[g,c],df.loc[g,m],df.loc[g,i]]
+            temp = [float(item) for item in temp]
+            df.append(temp)
+
+        if sum(vecs[0]) != 0 and sum(vecs[1]) != 0 and sum(vecs[2]) != 0:
+            v1 = vecs[0]
+            v2 = vecs[1]
+            v3 = vecs[2]
+            incl_dist.append(euclidean(v1,v2)+euclidean(v1,v3)+euclidean(v2,v3))
+            incl_genes.append(g)
+    
+    return incl_dist,incl_genes
