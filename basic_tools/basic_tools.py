@@ -73,20 +73,23 @@ def adj_df(df,mef,p_c,p_m):
         p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
         p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
     return_df = copy.deepcopy(df)
-    types = ['cyt','mem','ins',]
+    return_df.insert(len(return_df),'cyt',0)
+    return_df.insert(len(return_df),'mem',0)
+    return_df.insert(len(return_df),'ins',0)
+    types = ['cyt','mem','ins']
     cols = [mef + '_' + t for t in types]
-
+    
     for index,row in df.iterrows():
         c = float(row.get_value(cols[0]))
         m = float(row.get_value(cols[1]))
         i = float(row.get_value(cols[2]))
         c,m,i = exp_err_adj(c,m,i,p_c,p_m)
 
-        return_df.loc[index,cols[0]] = c
-        return_df.loc[index,cols[1]] = m
-        return_df.loc[index,cols[2]] = i
-        
-    return return_df
+        return_df.loc[index,'cyt'] = c
+        return_df.loc[index,'mem'] = m
+        return_df.loc[index,'ins'] = i
+    
+    return redact_df(return_df,types)
     
 def text_to_df(filename,index=None):
     """Converts a text file that is tab delimited with first row being header to Pandas DataFrame
