@@ -125,9 +125,9 @@ def trieuclid(df1,df2,d3):
         df3: (Pandas Dataframe) The third MEF DataFrame"""
     genes = list(df1.index)
     mef = df1.columns[0].split('_')[0] + '_' + df1.columns[0].split('_')[1]
-    c = mef + '_cyt'
-    m = mef + '_mem'
-    i = mef + '_ins'
+    c = 'cyt'
+    m = 'mem'
+    i = 'ins'
     
     incl_dist = []
     incl_genes = []
