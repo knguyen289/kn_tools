@@ -73,9 +73,9 @@ def adj_df(df,mef,p_c,p_m):
         p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
         p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
     return_df = copy.deepcopy(df)
-    return_df.insert(len(return_df),'cyt',0)
-    return_df.insert(len(return_df),'mem',0)
-    return_df.insert(len(return_df),'ins',0)
+    return_df.insert(len(return_df.columns),'cyt',0)
+    return_df.insert(len(return_df.columns),'mem',0)
+    return_df.insert(len(return_df.columns),'ins',0)
     types = ['cyt','mem','ins']
     cols = [mef + '_' + t for t in types]
     
