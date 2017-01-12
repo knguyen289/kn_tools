@@ -50,8 +50,16 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **filename:** *(str)* The location of the text file
-
 * **index:** *(str)* The column that can be used as an index [Optional]
+
+### trieuclid()
+#### Description:
+* Gets a list of the perimeters of the triangle created by the gene locations of each gene in each of df1,2,3...Returns the list of distances and the ordered list of genes...MUST HAVE THE SAME MEF NAME
+
+#### Parameters:
+* **df1:** *(Pandas Dataframe)* The first MEF DataFrame
+
+* **df2:** *(Pandas Dataframe)* The second MEF DataFrame
 
 ## ternary_tools/ternary_tools.py
 
