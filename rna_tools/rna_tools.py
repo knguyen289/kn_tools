@@ -21,86 +21,99 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
     temp_df = temp_df[temp_df['name2'] == rna]
 
     strands = list(set(temp_df['strand']))
-    for s in strands:
-        strand_df = temp_df[temp_df['strand'] == s]
-        try:
-            fig,ax = plt.subplots()
-            cols = [extx,intx,excd,incd]
-            r = 0
+    for strand in strands:
+        strand_df = temp_df[temp_df['strand'] == strand]
+        bins = list(set(strand_df['#bin']))
+        for b in bins:
+            bin_df = strand_df[strand_df['#bin'] == b]
+            try:
+                fig,ax = plt.subplots()
+                cols = [extx,intx,excd,incd]
+                r = 0
 
-            run_xlim = [[],[]]
-            for index,row in strand_df.iterrows():
-                tx = [int(row.get_value('txStart')),int(row.get_value('txEnd'))]
-                cds = [int(row.get_value('cdsStart')),int(row.get_value('cdsEnd'))]
+                run_xlim = [[],[]]
+                for index,row in bin_df.iterrows():
+                    tx = [int(row.get_value('txStart')),int(row.get_value('txEnd'))]
+                    cds = [int(row.get_value('cdsStart')),int(row.get_value('cdsEnd'))]
 
-                run_xlim[0].append(tx[0])
-                run_xlim[1].append(tx[1])
+                    run_xlim[0].append(tx[0])
+                    run_xlim[1].append(tx[1])
 
-                #3' NMD length, not returning it yet, but it's here
+                    #3' NMD length, not returning it yet, but it's here
+                    if row.get_value('strand') == '+':
+                        sect = tx[1] - cds[1]
+                    else:
+                        sect = cds[0] - tx[0]
+
+                    s = row.get_value('exonEnds')[:-1].split(',')
+                    s = sorted([int(item) for item in s])
+                    e = row.get_value('exonStarts')[:-1].split(',')
+                    e = sorted([int(item) for item in e])
+                    nodes = sorted(s+e)
+
+                    exons = []
+                    for i in range(len(s)):
+                        exons.append(sorted([s[i],e[i]]))
+
+                    ch1 = sorted(list(set([tx[0]] + [item for item in nodes if item <= cds[0]] + [cds[0]])))
+                    ch2 = sorted(list(set([cds[0]] + [item for item in nodes if item > cds[0] and item <= cds[1]] + [cds[1]])))
+                    ch3 = sorted(list(set([cds[1]] + [item for item in nodes if item > cds[1]] + [tx[1]])))
+
+                    for i in range(len(ch1)-1):
+                        c = 1
+                        w = 5
+                        for exon in exons:
+                            if ch1[i] >= exon[0] and ch1[i+1] <= exon[1]:  
+                                c = 0
+                                pass
+                        plt.hlines(r,ch1[i],ch1[i+1],colors=cols[c],linewidth=w)
+
+                    for i in range(len(ch2)-1):
+                        c = 3
+                        w = 5
+                        for exon in exons:
+                            if ch2[i] >= exon[0] and ch2[i+1] <= exon[1]:  
+                                c = 2
+                                w = 15
+                                pass
+                        plt.hlines(r,ch2[i],ch2[i+1],colors=cols[c],linewidth=w)
+
+                    for i in range(len(ch3)-1):
+                        c = 1
+                        w = 5
+                        for exon in exons:
+                            if ch3[i] >= exon[0] and ch3[i+1] <= exon[1]:  
+                                c = 0
+                                pass
+                        plt.hlines(r,ch3[i],ch3[i+1],colors=cols[c],linewidth=w)
+                    r += 1
+
                 if row.get_value('strand') == '+':
-                    sect = tx[1] - cds[1]
+                    left = min(run_xlim[0])
+                    lb = left - 100
+                    right = max(run_xlim[1])
+                    rb = right + 100
                 else:
-                    sect = cds[0] - tx[0]
-
-                s = row.get_value('exonEnds')[:-1].split(',')
-                s = sorted([int(item) for item in s])
-                e = row.get_value('exonStarts')[:-1].split(',')
-                e = sorted([int(item) for item in e])
-                nodes = sorted(s+e)
-                
-                exons = []
-                for i in range(len(s)):
-                    exons.append(sorted([s[i],e[i]]))
+                    left = max(run_xlim[1])
+                    lb = left + 100
+                    right = min(run_xlim[0])
+                    rb = right - 100
                     
-                ch1 = sorted(list(set([tx[0]] + [item for item in nodes if item <= cds[0]] + [cds[0]])))
-                ch2 = sorted(list(set([cds[0]] + [item for item in nodes if item > cds[0] and item <= cds[1]] + [cds[1]])))
-                ch3 = sorted(list(set([cds[1]] + [item for item in nodes if item > cds[1]] + [tx[1]])))
-
-                for i in range(len(ch1)-1):
-                    c = 1
-                    w = 5
-                    for exon in exons:
-                        if ch1[i] >= exon[0] and ch1[i+1] <= exon[1]:  
-                            c = 0
-                            pass
-                    plt.hlines(r,ch1[i],ch1[i+1],colors=cols[c],linewidth=w)
-
-                for i in range(len(ch2)-1):
-                    c = 3
-                    w = 5
-                    for exon in exons:
-                        if ch2[i] >= exon[0] and ch2[i+1] <= exon[1]:  
-                            c = 2
-                            w = 15
-                            pass
-                    plt.hlines(r,ch2[i],ch2[i+1],colors=cols[c],linewidth=w)
-
-                for i in range(len(ch3)-1):
-                    c = 1
-                    w = 5
-                    for exon in exons:
-                        if ch3[i] >= exon[0] and ch3[i+1] <= exon[1]:  
-                            c = 0
-                            pass
-                    plt.hlines(r,ch3[i],ch3[i+1],colors=cols[c],linewidth=w)
-                r += 1
-
-            if row.get_value('strand') == '+':
-                ax.set_xlim([min(run_xlim[0])-100,max(run_xlim[1])+100])
-            else:
-                ax.set_xlim([max(run_xlim[1])+100,min(run_xlim[0])-100])
-
-            ax.get_yaxis().set_visible(False)
-            ax.get_xaxis().set_visible(False)
-            ax.set_ylim([-1,len(strand_df.index)])
-            ax.set_title(rna + ' (' + row.get_value('strand') + ') length: ' + str(tx[1] - tx[0]))
-            fig.set_size_inches(12,len(strand_df.index)*0.5+1)
-            plt.tight_layout()
-            if fname == None:
-                plt.show()
-            else:
-                plt.savefig(fname + str(s) + '.png')
-        except:
-            plt.close()
-            print 'Plot could not be produced'
+                ax.set_xlim([lb,rb])   
+                ax.get_yaxis().set_visible(False)
+                ax.get_xaxis().set_visible(False)
+                ax.set_ylim([-1,len(bin_df.index)])
+                ax.set_title(rna + ' bin ' + str(b) + ' (' + str(strand) + ') window: ' + 
+                             str(max(run_xlim[1]) - max(run_xlim[0])) + ' [' + str(lb) + 
+                             ', ' + str(rb) + ']')
+                fig.set_size_inches(12,len(bin_df.index)*0.5+1)
+                plt.tight_layout()
+                if fname == None:
+                    plt.show()
+                else:
+                    plt.savefig(fname + str(strand) + str(b) + '.png')
+            except:
+                plt.close()
+                print 'Plot could not be produced'
     plt.close()
+
