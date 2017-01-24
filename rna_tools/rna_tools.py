@@ -95,7 +95,7 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
             if fname == None:
                 plt.show()
             else:
-                plt.savefig(fname + str(b) + '.png')
+                plt.savefig(fname + '-' + str(b) + '.png')
         except:
             plt.close()
             print 'Plot could not be produced'
