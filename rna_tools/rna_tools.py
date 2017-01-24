@@ -22,7 +22,7 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
 
     strands = list(set(temp_df['strand']))
     for s in strands:
-        strand_df = temp_df[temp_df['strand'] == b]
+        strand_df = temp_df[temp_df['strand'] == s]
         try:
             fig,ax = plt.subplots()
             cols = [extx,intx,excd,incd]
