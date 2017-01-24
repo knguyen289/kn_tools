@@ -88,9 +88,9 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
 
             ax.get_yaxis().set_visible(False)
             ax.get_xaxis().set_visible(False)
-            ax.set_ylim([-1,len(temp_df.index)])
+            ax.set_ylim([-1,len(bin_df.index)])
             ax.set_title(rna + ' (' + row.get_value('strand') + ') length: ' + str(tx[1] - tx[0]))
-            fig.set_size_inches(12,len(temp_df.index)*0.5+1)
+            fig.set_size_inches(12,len(bin_df.index)*0.5+1)
             plt.tight_layout()
             if fname == None:
                 plt.show()
