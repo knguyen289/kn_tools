@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd 
 import copy
 
-def rna_vis(rna,data,fname=None,excd='Crimson',extx='DARKRED',incd='PINK',intx='MistyRose'):
+def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',intx='MistyRose'):
     """Creates a bar visualization for an rna strand with UCSC data
 
     Parameters:
@@ -12,8 +12,8 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='DARKRED',incd='PINK',intx='
         data: (Pandas DataFrame) The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
         fname: (str) The filename of the figure saved (must be .png) [Optional]
         excd: (str) HTML color name for exons within coding region (default: 'Crimson') [Optional]
-        extx: (str) HTML color name for exons outside coding region (default: 'DARKRED') [Optional]
-        incd: (str) HTML color name for introns within coding region (default: 'PINK') [Optional]
+        extx: (str) HTML color name for exons outside coding region (default: '#8c0d26') [Optional]
+        incd: (str) HTML color name for introns within coding region (default: '#ffbab3') [Optional]
         intx: (str) HTML color name for introns outside coding region (default: 'MistyRose') [Optional]
     """
     sns.set_style('whitegrid')
