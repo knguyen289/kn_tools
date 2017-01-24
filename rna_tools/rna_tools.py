@@ -4,20 +4,24 @@ import numpy as np
 import pandas as pd 
 import copy
 
-def rna_vis(rna,data,fname=None):
+def rna_vis(rna,data,fname=None,excd='Crimson',extx='DARKRED',incd='PINK',intx='MistyRose'):
     """Creates a bar visualization for an rna strand with UCSC data
 
     Parameters:
         rna: (str) The RNA name in the 'name2' column of the UCSC data
         data: (Pandas DataFrame) The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
         fname: (str) The filename of the figure saved (must be .png) [Optional]
+        excd: (str) HTML color name for exons within coding region (default: 'Crimson') [Optional]
+        extx: (str) HTML color name for exons outside coding region (default: 'DARKRED') [Optional]
+        incd: (str) HTML color name for introns within coding region (default: 'PINK') [Optional]
+        intx: (str) HTML color name for introns outside coding region (default: 'MistyRose') [Optional]
     """
     sns.set_style('whitegrid')
     temp_df = copy.deepcopy(data)
     temp_df = temp_df[temp_df['name2'] == rna]
     try:
         fig,ax = plt.subplots()
-        cols = ['DARKRED','MistyRose','Crimson','PINK']
+        cols = [extx,intx,excd,incd]
         r = 0
 
         for index,row in temp_df.iterrows():

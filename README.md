@@ -164,3 +164,11 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **fname:** *(str)* The filename of the figure saved (must be .png) [Optional]
 
+* **excd:** *(str)* HTML color name for exons within coding region (default: 'Crimson') [Optional]
+
+* **extx:** *(str)* HTML color name for exons outside coding region (default: 'DARKRED') [Optional]
+
+* **incd:** *(str)* HTML color name for introns within coding region (default: 'PINK') [Optional]
+
+* **intx:** *(str)* HTML color name for introns outside coding region (default: 'MistyRose') [Optional]
+
