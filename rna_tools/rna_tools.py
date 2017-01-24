@@ -28,9 +28,15 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
             cols = [extx,intx,excd,incd]
             r = 0
 
+            run_xlim = [[],[]]
             for index,row in bin_df.iterrows():
                 tx = [int(row.get_value('txStart')),int(row.get_value('txEnd'))]
                 cds = [int(row.get_value('cdsStart')),int(row.get_value('cdsEnd'))]
+
+                run_xlim[0].append(tx[0])
+                run_xlim[1].append(tx[1])
+
+                #3' NMD length, not returning it yet, but it's here
                 if row.get_value('strand') == '+':
                     sect = tx[1] - cds[1]
                 else:
@@ -80,11 +86,9 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
                 r += 1
 
             if row.get_value('strand') == '+':
-                ax.set_xlim([tx[0]-100,tx[1]+100])
-
-
+                ax.set_xlim([min(run_xlim[0])-100,max(run_xlim[1])+100])
             else:
-                ax.set_xlim([tx[1]+100,tx[0]-100])
+                ax.set_xlim([max(run_xlim[1])+100,min(run_xlim[0])-100])
 
             ax.get_yaxis().set_visible(False)
             ax.get_xaxis().set_visible(False)
