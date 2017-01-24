@@ -20,16 +20,16 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
     temp_df = copy.deepcopy(data)
     temp_df = temp_df[temp_df['name2'] == rna]
 
-    bins = list(set(temp_df['#bin']))
-    for b in bins:
-        bin_df = temp_df[temp_df['#bin'] == b]
+    strands = list(set(temp_df['strand']))
+    for s in strands:
+        strand_df = temp_df[temp_df['strand'] == b]
         try:
             fig,ax = plt.subplots()
             cols = [extx,intx,excd,incd]
             r = 0
 
             run_xlim = [[],[]]
-            for index,row in bin_df.iterrows():
+            for index,row in strand_df.iterrows():
                 tx = [int(row.get_value('txStart')),int(row.get_value('txEnd'))]
                 cds = [int(row.get_value('cdsStart')),int(row.get_value('cdsEnd'))]
 
@@ -92,14 +92,14 @@ def rna_vis(rna,data,fname=None,excd='Crimson',extx='#8c0d26',incd='#ffbab3',int
 
             ax.get_yaxis().set_visible(False)
             ax.get_xaxis().set_visible(False)
-            ax.set_ylim([-1,len(bin_df.index)])
+            ax.set_ylim([-1,len(strand_df.index)])
             ax.set_title(rna + ' (' + row.get_value('strand') + ') length: ' + str(tx[1] - tx[0]))
-            fig.set_size_inches(12,len(bin_df.index)*0.5+1)
+            fig.set_size_inches(12,len(strand_df.index)*0.5+1)
             plt.tight_layout()
             if fname == None:
                 plt.show()
             else:
-                plt.savefig(fname + '-' + str(b) + '.png')
+                plt.savefig(fname + str(s) + '.png')
         except:
             plt.close()
             print 'Plot could not be produced'
