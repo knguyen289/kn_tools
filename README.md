@@ -162,13 +162,13 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **data:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
 
-* **fname:** *(str)* The filename of the figure saved (must be .png) [Optional]
+* **fname:** *(str)* The filename of the figure saved (no suffix) [Optional]
 
 * **excd:** *(str)* HTML color name for exons within coding region (default: 'Crimson') [Optional]
 
-* **extx:** *(str)* HTML color name for exons outside coding region (default: 'DARKRED') [Optional]
+* **extx:** *(str)* HTML color name for exons outside coding region (default: '#8c0d26') [Optional]
 
-* **incd:** *(str)* HTML color name for introns within coding region (default: 'PINK') [Optional]
+* **incd:** *(str)* HTML color name for introns within coding region (default: '#ffbab3') [Optional]
 
 * **intx:** *(str)* HTML color name for introns outside coding region (default: 'MistyRose') [Optional]
 
