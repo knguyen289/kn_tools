@@ -162,3 +162,5 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **data:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
 
+* **fname:** *(str)* The filename of the figure saved (must be .png) [Optional]
+
