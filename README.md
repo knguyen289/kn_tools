@@ -151,3 +151,14 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **spec_lab:** *(str)* Label for the angle spectrum [Optional]
 
+## rna_tools/rna_tools.py
+
+### rna_vis()
+#### Description:
+* Creates a bar visualization for an rna strand with UCSB data
+
+#### Parameters:
+* **rna:** *(str)* The RNA name in the 'name2' column of the UCSB data
+
+* **data:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSB data, has a 'name2' column
+
