@@ -5,11 +5,11 @@ import pandas as pd
 import copy
 
 def rna_vis(rna,data):
-    """Creates a bar visualization for an rna strand with UCSB data
+    """Creates a bar visualization for an rna strand with UCSC data
 
     Parameters:
-        rna: (str) The RNA name in the 'name2' column of the UCSB data
-        data: (Pandas DataFrame) The DataFrame created using basic_tools text_to_df for the UCSB data, has a 'name2' column
+        rna: (str) The RNA name in the 'name2' column of the UCSC data
+        data: (Pandas DataFrame) The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
     """
     sns.set_style('whitegrid')
     temp_df = copy.deepcopy(data)
@@ -87,4 +87,3 @@ def rna_vis(rna,data):
     except:
         plt.close()
         return 'Plot could not be produced'
-        
