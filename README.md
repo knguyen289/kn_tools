@@ -153,22 +153,53 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ## rna_tools/rna_tools.py
 
-### rna_vis()
+### am_gen()
 #### Description:
-* Creates a bar visualization for an rna strand with UCSC data
+* Generates the geometric mean of the proportion of the window exons take up for a given dataframe (which should represent one plot)
 
 #### Parameters:
-* **rna:** *(str)* The RNA name in the 'name2' column of the UCSC data
+* **data_df:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
 
-* **data:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
+### scale()
+#### Description:
+* Takes in a dataframe of ucsc info to be plotted, and creates the plottable segments without augmentation, returns the plottable dataframe
 
-* **fname:** *(str)* The filename of the figure saved (no suffix) [Optional]
+#### Parameters:
 
-* **excd:** *(str)* HTML color name for exons within coding region (default: 'Crimson') [Optional]
+### augment()
+#### Description:
+* Takes in a dataframe of ucsc info to be plotted, and creates the plottable segments with augmentation, returns the plottable dataframe
 
-* **extx:** *(str)* HTML color name for exons outside coding region (default: '#8c0d26') [Optional]
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The DataFrame created by the filter on the UCSC data_df, has one bin, one strand direction, and one rna attributed to it
 
-* **incd:** *(str)* HTML color name for introns within coding region (default: '#ffbab3') [Optional]
+### plot_seg()
+#### Description:
+* Plots the exons on a single segment of the rna, each rna has 3 segments: 1 is before the cdsStart, 2 is between cdsStart and cdsEnd, 3 is past cdsEnd
 
-* **intx:** *(str)* HTML color name for introns outside coding region (default: 'MistyRose') [Optional]
+#### Parameters:
+* **ax:** *(Matplotlib Axis)* The axis to plot the seg onto
+* **r:** *(int)* The y value to plot the seg onto
+* **seg:** *(list)* The list of exon start and ends to plot
+* **exons:** *(list of lists)* The list of exons for ex_i, the list has an element [s_i,e_i]
+* **c:** *(str)* Valid matplotlib color to plot, for seg 2's it should be Crimson, for seg 1 and 3's it should be #8c0d26
+
+### ucsc_plot()
+#### Description:
+* Produces all the plot for the UCSC data of a single rna, separates plots by bin and strand, augments if am is below 0.02
+
+#### Parameters:
+* **rna:** *(str)* The RNA name, must be one from the 'name2' column in the UCSC dataframe
+
+* **data:** *(str)* The UCSC DataFrame created from the text_to_df function
+
+* **fname:** *(str)* If file output to pdf, put a special fname for this rna, separate plots will be produced and labeled with corresponding bin and strand [Optional]
+
+* **override:** *(boolean)* Set to True if you want the unscaled version even if it is under the 0.02 threshold [Optional]
+
+* **excd:** *(str)* Matplotlib compatible color for exons in coding region [Optional]
+
+* **extx:** *(str)* Matplotlib compatible color for exons out of coding region [Optional]
+
+* **incd:** *(str)* Matplotlib compatible color for introns in coding region [Optional]
 
