@@ -93,38 +93,25 @@ def augment(df,am):
             s_i = exon[0]
             e_i = exon[1]
             
-            if len(aug_ex) > 0 and len(aug_ex) != len(exons)-1:
-                m = (s_i + e_i)/2.0
-                s_f = m - scale*(e_i - m)
-                e_f = m + scale*(e_i - m)
-            elif len(aug_ex) == 0 and len(aug_ex) != len(exons)-1:
-                l = e_i - s_i
-                s_f = e_i - scale*l
-                e_f = e_i
-            elif len(aug_ex) != 0 and len(aug_ex) == len(exons)-1:
-                l = e_i - s_i
-                e_f = s_i + scale*l
-                s_f = s_i
-            else:
-                m = (s_i + e_i)/2.0
-                s_f = m - scale*(e_i - m)
-                e_f = m + scale*(e_i - m)
-                
+            m = (s_i + e_i)/2.0
+            s_f = m - scale*(e_i - m)
+            e_f = m + scale*(e_i - m)
+            
             s_f = int(s_f - 0.5)
             e_f = int(e_f + 0.5)
             #Making sure the tx starts/ends are adjusted if they have also been augmented
             if s_f < tx[0]:
                 tx[0] = s_f
-            if s_f < cds[0]:
-                m_i = (s_i + e_i)/2.0
-                m_f = (s_f + e_f)/2.0
-                cds[0] = m_f - scale*(m_i - cds[0])
+            #if s_f < cds[0]:
+                #m_i = (s_i + e_i)/2.0
+                #m_f = (s_f + e_f)/2.0
+                #cds[0] = m_f - scale*(m_i - cds[0])
             if e_f > tx[1]:
                 tx[1] = e_f
-            if e_f > cds[1]:
-                m_i = (s_i + e_i)/2.0
-                m_f = (s_f + e_f)/2.0
-                cds[1] = m_f + scale*(m_i - cds[1])
+            #if e_f > cds[1]:
+                #m_i = (s_i + e_i)/2.0
+                #m_f = (s_f + e_f)/2.0
+                #cds[1] = m_f + scale*(abs(cds[1] - m_i))
             aug_ex.append([s_f,e_f])
             aug_s.append(s_f)
             aug_e.append(e_f)
@@ -176,7 +163,6 @@ def ucsc_plot(rna,data,fname=None,override=False,excd='Crimson',extx='#8c0d26',i
         extx: (str) Matplotlib compatible color for exons out of coding region [Optional]
         incd: (str) Matplotlib compatible color for introns in coding region [Optional]
         intx: (str) Matplotlib compatible color for introns out of coding region [Optional]"""
-
     str_aug = ''
     sns.set_style('whitegrid')
     temp_df = copy.deepcopy(data)
@@ -243,9 +229,9 @@ def ucsc_plot(rna,data,fname=None,override=False,excd='Crimson',extx='#8c0d26',i
                 plt.tight_layout()
                 if fname == None:
                     plt.show()
-                    plt.close()
                 else:
                     plt.savefig(fname + str(strand) + str(b) + str_aug + '.pdf')
+                plt.close()
             except:
                 plt.close()
                 print 'Plot could not be produced'
