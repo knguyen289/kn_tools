@@ -190,7 +190,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **spec_lab:** *(str)* Label for the angle spectrum [Optional]
 
-## rna_tools/rna_tools.py
+## rna_plot_tools/rna_plot_tools.py
 
 ### am_gen()
 #### Description:
@@ -257,5 +257,88 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **intx:** *(str)* Matplotlib compatible color for introns out of coding region [Optional]
 
+## rna_path_tools/rna_path_tools.py
+
+### get_rna_dfs()
+#### Description:
+* Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes
+
+#### Parameters:
+* **rna:** *(str)* The name of the RNA in the name2 column
+
+* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
+
 #### Returns:
-* **turtles** *(reptile)* porcupine
+* **dfs:** *(list)* A list of one or two filtered Pandas DataFrames, one for each strand
+
+### get_lookup1()
+#### Description:
+* Gets the first lookup table for the given RNA DataFrame produced by get_rna_dfs
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+
+#### Returns:
+* **lookup_df:** *(Pandas DataFrame)* The first lookup table for exon ID, has upper and lower bounds for each exon, all exons, and number of diff forms per exon
+
+### get_lookup2()
+#### Description:
+* Gets the second lookup table for the given RNA DataFrame produced by get_rna_dfs
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+
+#### Returns:
+* **lu2:** *(Pandas DataFrame)* The second lookup table, masks the multiple splice sites as different exons
+
+### get_pexons()
+#### Description:
+* Gets the psuedoexons for the given RNA DataFrame produced by get_rna_dfs
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+
+* **lu_df:** *(Pandas DataFrame)* If lookup table 2 has already been produced, you can input it [Optional]
+
+#### Returns:
+* **strand_nodes:** *(list)* A list of the psuedoexons for conversion to a graph
+
+### get_graph()
+#### Description:
+* Gets the graph for a given list of nodes
+
+#### Parameters:
+* **strand_nodes:** *(list)* A list of the psuedoexons for conversion to a graph created by get_pexons
+
+#### Returns:
+* **G:** *(Networkx DiGraph)* The digraph created by the list of nodes
+* **se_pairs:** *(list of lists)* List of all possible start,end pairs in the graph
+
+### get_all_paths()
+#### Description:
+* Gets all paths with replacement of the pseudoexons, adds an '*' if it exists
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+
+#### Returns:
+* **paths:** *(list)* List of all paths produced
+* **pathcount:** *(int)* Number of paths
+
+### print_all_paths()
+#### Description:
+* Prints all paths with replacement of the pseudoexons, adds an '*' if it exists
+
+#### Parameters:
+* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+
+
+### print_rna_paths()
+#### Description:
+* Prints all RNA paths for a given RNA in name2 of UCSC DataFrame
+
+#### Parameters:
+* **rna:** *(str)* The name of the RNA in the name2 column
+
+* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
+

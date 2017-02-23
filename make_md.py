@@ -1,5 +1,5 @@
 #Copy paste into terminal:
-#python make_md.py -fnames basic_tools/basic_tools.py,ternary_tools/ternary_tools.py,rna_tools/rna_tools.py -o README.md
+#python make_md.py -fnames basic_tools/basic_tools.py,ternary_tools/ternary_tools.py,rna_plot_tools/rna_plot_tools.py,rna_path_tools/rna_path_tools.py -o README.md
 
 import argparse
 import os
