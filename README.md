@@ -8,7 +8,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
+
 * **indexes:** *(list of str)* The list of indexes
+
 
 ### redact_df()
 #### Description:
@@ -16,7 +18,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
+
 * **indexes:** *(list of str)* The list of column names
+
 
 ### get_certain_mef()
 #### Description:
@@ -25,15 +29,20 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
 
+
 ### exp_err_adj()
 #### Description:
 * Experimental error adjustment
 
 #### Parameters:
 * **c =** *(float)* Cytosolic experimental value
+
 * **m =** *(float)* Membrane experimental value
+
 * **i =** *(float)* Insoluble experimental value
+
 * **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
 
 ### adj_df()
 #### Description:
@@ -41,8 +50,11 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The experimentally derived DataFrame
+
 * **mef:** *(str)* The MEF or prefix of columns [with suffix _ins and the like]
+
 * **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
 
 ### text_to_df()
 #### Description:
@@ -50,7 +62,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **filename:** *(str)* The location of the text file
+
 * **index:** *(str)* The column that can be used as an index [Optional]
+
 
 ### trieuclid()
 #### Description:
@@ -69,7 +83,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **x_vals:** *(list)* [x_0,x_1]
+
 * **y_vals:** *(list)* [y_0,y_1]
+
 
 ### get_angle()
 #### Description:
@@ -77,7 +93,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **x_vals:** *(list)* [x_0,x_1]
+
 * **y_vals:** *(list)* [y_0,y_1]
+
 
 ### get_points()
 #### Description:
@@ -85,9 +103,13 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **info_df:** *(Pandas Dataframe)* has columns for the vertices of ternary
+
 * **top_col:** *(str)* Name of top vertex
+
 * **left_col:** *(str)* Name of left vertex
+
 * **right_col:** *(str)* Name of right vertex
+
 
 ### plot_ternary()
 #### Description:
@@ -95,14 +117,23 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **data_specs:** *(list of dictionaries)* Has details about each data to be plotted keys are 'Data','Color','Label'
+
 * **title:** *(str)* Title of the plot
+
 * **fig:** *(Matplotlib Figure)* Figure to plot on [Optional]
+
 * **ax:** *(Matplotlib Axis)* Axis to plot on [Optional]
+
 * **t_scale:** *(float)* Text scale up or down [Optional]
+
 * **location:** *(str)* Where the plot should be saved, if it is to be saved [Optional]
+
 * **t:** *(str)* Title of the top vertex [Optional]
+
 * **l:** *(str)* Title of the left vertex [Optional]
+
 * **r:** *(str)* Title of the right vertex [Optional]
+
 
 ### alter_length()
 #### Description:
@@ -110,7 +141,9 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **x_vals =** *(list)* [x_0,x_1]
+
 * **y_vals =** *(list)* [y_0,y_1[
+
 
 ### get_points_dyn()
 #### Description:
@@ -118,11 +151,17 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **info_df:** *(Pandas Dataframe)* has columns for the vertices of ternary
+
 * **head:** *(str)* Name of the cell type that is the head of the vectors
+
 * **tail:** *(str)* Name of the cell type that is the tail of the vectors
+
 * **t_suff:** *(str)* Suffix of the column in info_df for top vertex data [Optional]
+
 * **l_suff:** *(str)* Suffix of the column in info_df for left vertex data [Optional]
+
 * **r_suff:** *(str)* Suffix of the column in info_df for right vertex data [Optional]
+
 
 ### plot_dyn_ternary()
 #### Description:
@@ -160,6 +199,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **data_df:** *(Pandas DataFrame)* The DataFrame created using basic_tools text_to_df for the UCSC data, has a 'name2' column
 
+
 ### scale()
 #### Description:
 * Takes in a dataframe of ucsc info to be plotted, and creates the plottable segments without augmentation, returns the plottable dataframe
@@ -167,13 +207,16 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The DataFrame created by the filter on the UCSC data_df, has one bin, one strand direction, and one rna attributed to it
 
+
 ### augment()
 #### Description:
 * Takes in a dataframe of ucsc info to be plotted, and creates the plottable segments with augmentation, returns the plottable dataframe
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The DataFrame created by the filter on the UCSC data_df, has one bin, one strand direction, and one rna attributed to it
+
 * **am:** *(float)* The arithmetic mean generated by am_gen function, must be below 0.02 to be useful, used as the index to scale up exons
+
 
 ### plot_seg()
 #### Description:
@@ -181,11 +224,17 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Parameters:
 * **ax:** *(Matplotlib Axis)* The axis to plot the seg onto
+
 * **r:** *(int)* The y value to plot the seg onto
+
 * **seg:** *(list)* The list of exon start and ends to plot
+
 * **exons:** *(list of lists)* The list of exons for ex_i, the list has an element [s_i,e_i]
+
 * **c:** *(str)* Valid matplotlib color to plot, for seg 2's it should be Crimson, for seg 1 and 3's it should be #8c0d26
+
 * **w:** *(float)* The width of the line, for seg 2's it should be 20, for seg 1 and 3's it should be 10
+
 
 ### ucsc_plot()
 #### Description:
@@ -208,3 +257,5 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **intx:** *(str)* Matplotlib compatible color for introns out of coding region [Optional]
 
+#### Returns:
+* **turtles** *(reptile)* porcupine

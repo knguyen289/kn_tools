@@ -32,10 +32,14 @@ def main(args):
 		func = ''
 		desc = ''
 		param = False
+		ret = False
 		params = []
+		rets = []
+
 		for line in f:
 			line = line.lstrip()
 			line = line.rstrip()
+
 			if len(line) > 0:
 				if line.find('\"\"\"') != -1:
 					in_desc = not in_desc
@@ -43,40 +47,74 @@ def main(args):
 					if func != '':
 						doc += '### ' + func + '()\n'
 						doc += '#### Description:\n' + '* ' + desc + '\n\n'
+
+					if len(params) > 0:
 						doc += '#### Parameters:\n' 
-					for p in params:
-						paren1 = p.index('(')
-						paren2 = p.index(')')
-						p_name = p[:paren1-1]
-						p_type = p[paren1:paren2+1]
-						p_rest = p[paren2+1:]
-						doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n'
+						for p in params:
+							paren1 = p.index('(')
+							paren2 = p.index(')')
+							p_name = p[:paren1-1]
+							p_type = p[paren1:paren2+1]
+							p_rest = p[paren2+1:]
+							doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n\n'
+					
+					if len(rets) > 0:
+						doc += '#### Returns:\n'
+						for r in rets:
+							paren1 = r.index('(')
+							paren2 = r.index(')')
+							r_name = r[:paren1-1]
+							r_type = r[paren1:paren2+1]
+							r_rest = r[paren2+1:]
+							doc += '* **' + r_name + '** *' + r_type  + '*' + r_rest + '\n'
 
 					doc += '\n'
 					func = ''
 					desc = ''
 					param = False
+					ret = False
 					params = []
+					rets = []
 					func = line.split(' ')[1].split('(')[0]
 				elif in_desc:
 					if func != '' and desc == '':
 						desc = line[3:]
 					elif line.find('Parameters:') != -1:
 						param = True
+						ret = False
+						pass
+					elif line.find('Returns:') != -1:
+						ret = True
+						param = False
 						pass
 					elif func != '' and desc != '' and param:
 						params.append(line)
+					elif func != '' and desc != '' and not param and ret:
+						rets.append(line)
 		if func != '':
 			doc += '### ' + func + '()\n'
 			doc += '#### Description:\n' + '* ' + desc + '\n\n'
+			
+		if len(params) > 0:
 			doc += '#### Parameters:\n' 
-		for p in params:
-			paren1 = p.index('(')
-			paren2 = p.index(')')
-			p_name = p[:paren1-1]
-			p_type = p[paren1:paren2+1]
-			p_rest = p[paren2+1:]
-			doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n\n'
+			for p in params:
+				paren1 = p.index('(')
+				paren2 = p.index(')')
+				p_name = p[:paren1-1]
+				p_type = p[paren1:paren2+1]
+				p_rest = p[paren2+1:]
+				doc += '* **' + p_name + '** *' + p_type  + '*' + p_rest + '\n\n'
+		
+		if len(rets) > 0:
+			doc += '#### Returns:\n'
+			for r in rets:
+				paren1 = r.index('(')
+				paren2 = r.index(')')
+				r_name = r[:paren1-1]
+				r_type = r[paren1:paren2+1]
+				r_rest = r[paren2+1:]
+				doc += '* **' + r_name + '** *' + r_type  + '*' + r_rest + '\n'
+
 	try:
 		f = open(args.output,'w')
 	except:
