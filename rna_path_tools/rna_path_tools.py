@@ -185,7 +185,9 @@ def get_all_paths(rna,data_df,detail=False):
 	for df in dfs:
 		lu_df = get_lookup2(df)
 		pnodes = get_pexons(df,lu_df)
-		
+		index = list(df.index)[0]
+        strand = df.loc[index,'strand']
+        
 		G,se_pairs = get_graph(pnodes)
 		
 		for se in se_pairs:
@@ -193,14 +195,14 @@ def get_all_paths(rna,data_df,detail=False):
 				path = list(path)
 				if path in pnodes:
 					if detail:
-						paths.append([df.loc['name2'],df.loc['strand'],'*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+						paths.append([rna,strand,'*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
 					else:
-						paths.append([df.loc['name2'],df.loc['strand'],'*']+[lu_df.loc[item,'exon'] for item in path])
+						paths.append([rna,strand,'*']+[lu_df.loc[item,'exon'] for item in path])
 				else:
 					if detail:
-						paths.append([df.loc['name2'],df.loc['strand'],' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+						paths.append([rna,strand,' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
 					else:
-						paths.append([df.loc['name2'],df.loc['strand'],' ']+map(str,path)) 
+						paths.append([rna,strand,' ']+map(str,path))
 				
 	return paths
 
