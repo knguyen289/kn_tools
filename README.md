@@ -319,11 +319,12 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * Gets all paths with replacement of the pseudoexons, adds an '*' if it exists
 
 #### Parameters:
-* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
+* **rna:** *(str)* The name of the RNA in the name2 column
+
+* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
 
 #### Returns:
 * **paths:** *(list)* List of all paths produced
-* **pathcount:** *(int)* Number of paths
 
 ### print_all_paths()
 #### Description:
