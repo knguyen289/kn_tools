@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import networkx as nx
+import copy as copy
 
 def get_rna_dfs(rna,data_df):
 	"""Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes
