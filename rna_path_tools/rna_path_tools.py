@@ -193,14 +193,14 @@ def get_all_paths(rna,data_df,detail=False):
 				path = list(path)
 				if path in pnodes:
 					if detail:
-						paths.append(['*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+						paths.append([df.loc['name2'],df.loc['strand'],'*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
 					else:
-						paths.append(['*']+[lu_df.loc[item,'exon'] for item in path])
+						paths.append([df.loc['name2'],df.loc['strand'],'*']+[lu_df.loc[item,'exon'] for item in path])
 				else:
 					if detail:
-						paths.append([' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+						paths.append([df.loc['name2'],df.loc['strand'],' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
 					else:
-						paths.append([' ']+map(str,path))
+						paths.append([df.loc['name2'],df.loc['strand'],' ']+map(str,path))
 				
 	return paths
 
