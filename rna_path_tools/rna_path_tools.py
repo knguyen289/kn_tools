@@ -169,12 +169,13 @@ def get_graph(strand_nodes):
 	se_pairs = [list(item) for item in list(se_pairs)]
 	return G,se_pairs
 
-def get_all_paths(rna,data_df):
+def get_all_paths(rna,data_df,detail=False):
 	"""Gets all paths with replacement of the pseudoexons, adds an '*' if it exists
 	
 	Parameters:
 		rna: (str) The name of the RNA in the name2 column
 		data_df: (Pandas DataFrame) The UCSC dataframe from text_to_df
+		detail: (boolean) False if output is nodes, True for start and ends [Optional]
 	
 	Returns:
 		paths: (list) List of all paths produced
@@ -191,9 +192,15 @@ def get_all_paths(rna,data_df):
 			for path in nx.all_simple_paths(G, source=se[0], target=se[1]):
 				path = list(path)
 				if path in pnodes:
-					paths.append(['*']+[lu_df.loc[item,'exon'] for item in path])
+					if detail:
+						paths.append(['*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+					else:
+						paths.append(['*']+[lu_df.loc[item,'exon'] for item in path])
 				else:
-					paths.append([' ']+map(str,path))
+					if detail:
+						paths.append([' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+					else:
+						paths.append([' ']+map(str,path))
 				
 	return paths
 
