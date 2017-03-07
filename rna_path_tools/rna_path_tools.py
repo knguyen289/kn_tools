@@ -200,7 +200,7 @@ def get_all_paths(rna,data_df,detail=False):
 					if detail:
 						paths.append([df.loc['name2'],df.loc['strand'],' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
 					else:
-						paths.append([df.loc['name2'],df.loc['strand'],' ']+map(str,path))
+						paths.append([df.loc['name2'],df.loc['strand'],' ']+map(str,path)) 
 				
 	return paths
 
