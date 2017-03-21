@@ -125,6 +125,8 @@ def get_pexons(df,lu_df=[]):
 	if len(lu_df) == 0:
 		lu_df = get_lookup2(df)
 	
+	detailed = []
+	names = []
 	strand_nodes = []
 	for index,row in df.iterrows():
 		s = map(int,row.get_value('exonStarts')[:-1].split(','))
@@ -146,10 +148,12 @@ def get_pexons(df,lu_df=[]):
 					if lu_ex[1] == exon[0] and lu_ex[2] == exon[1]:
 						pnodes.append(i)
 						unset = False
-						
+
+		detailed.append(map(int,[df.loc[index,'cdsStart'],df.loc[index,'cdsEnd']]))
+		names.append(df.loc[index,'name'])
 		strand_nodes.append(pnodes)
 		
-	return strand_nodes
+	return strand_nodes,detailed,names
 
 def get_graph(strand_nodes):
 	"""Gets the graph for a given list of nodes
@@ -184,7 +188,7 @@ def get_all_paths(rna,data_df,detail=False):
 	paths = []
 	for df in dfs:
 		lu_df = get_lookup2(df)
-		pnodes = get_pexons(df,lu_df)
+		pnodes,pdetailed,names = get_pexons(df,lu_df)
 		index = list(df.index)[0]
 		strand = df.loc[index,'strand']
 		chrom = df.loc[index,'chrom']
@@ -195,9 +199,13 @@ def get_all_paths(rna,data_df,detail=False):
 				path = list(path)
 				if path in pnodes:
 					if detail:
-						paths.append([rna,strand,chrom,'*']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+						ind = pnodes.index(path)
+						irl = pdetailed[ind]
+						realname = names[ind]
+						paths.append([rna,strand,chrom,realname]+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path]+irl)
+
 					else:
-						paths.append([rna,strand,chrom,'*']+[lu_df.loc[item,'exon'] for item in path])
+						paths.append([rna,strand,chrom,realname]+[lu_df.loc[item,'exon'] for item in path])
 				else:
 					if detail:
 						paths.append([rna,strand,chrom,' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
@@ -206,48 +214,3 @@ def get_all_paths(rna,data_df,detail=False):
 				
 	return paths
 
-def print_all_paths(df):
-	"""Prints all paths with replacement of the pseudoexons, adds an '*' if it exists
-	
-	Parameters:
-		df: (Pandas DataFrame) The RNA DataFrame produced by get_rna_dfs
-	"""
-	lu_df = get_lookup2(df)
-	pnodes = get_pexons(df,lu_df)
-	
-	G,se_pairs = get_graph(pnodes)
-	pathcount = 0
-	for se in se_pairs:
-		for path in nx.all_simple_paths(G, source=se[0], target=se[1]):
-			path = list(path)
-			pathcount += 1
-			if path in pnodes:
-				path = ' | '.join([lu_df.loc[item,'exon'] for item in path])
-				print '*',path
-			else:
-				path = '  '+' | '.join(map(str,path))
-				print path
-				
-	print pathcount, 'Total Paths'
-
-def print_rna_paths(rna,data_df):
-	"""Prints all RNA paths for a given RNA in name2 of UCSC DataFrame
-	
-	Parameters:
-		rna: (str) The name of the RNA in the name2 column
-		data_df: (Pandas DataFrame) The UCSC dataframe from text_to_df
-	"""
-	dfs = get_rna_dfs(rna,data_df)
-	if len(dfs) != 1:
-		print 'Warning: Different strand directions may have exons with the same number that are not truly equivalent\n'
-	else:
-		print
-	for df in dfs:
-		strand = list(set(df['strand']))[0]
-		pnodes = get_pexons(df)
-		print 'Strand Direction:',strand
-		if len(pnodes[0]) == 1:
-			print 'No producable graph'
-		else:
-			print_all_paths(df)
-		print

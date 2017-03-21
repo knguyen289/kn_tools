@@ -323,23 +323,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
 
+* **detail:** *(boolean)* False if output is nodes, True for start and ends [Optional]
+
 #### Returns:
 * **paths:** *(list)* List of all paths produced
-
-### print_all_paths()
-#### Description:
-* Prints all paths with replacement of the pseudoexons, adds an '*' if it exists
-
-#### Parameters:
-* **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
-
-
-### print_rna_paths()
-#### Description:
-* Prints all RNA paths for a given RNA in name2 of UCSC DataFrame
-
-#### Parameters:
-* **rna:** *(str)* The name of the RNA in the name2 column
-
-* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
-
