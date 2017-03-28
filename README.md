@@ -327,3 +327,14 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Returns:
 * **paths:** *(list)* List of all paths produced
+## analysis_tools/analysis_tools.py
+
+### go_to_bed()
+#### Description:
+* Makes the BED Files for all possible paths and outputs to bed and bedinfo directories, will consider existing directories and enumerate, also labels with RNA Name
+
+#### Parameters:
+* **rna:** *(str)* The name of the RNA in the name2 column
+
+* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
+
