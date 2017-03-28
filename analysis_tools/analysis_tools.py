@@ -1,7 +1,6 @@
 import os
 
-from kn_tools.basic_tools import *
-from kn_tools.rna_path_tools import *
+from kn_tools.rna_path_tools import get_all_paths
 
 def go_to_bed(rna,data_df):
     """Makes the BED Files for all possible paths and outputs to bed and bedinfo directories, will consider existing directories and enumerate, also labels with RNA Name
@@ -10,7 +9,7 @@ def go_to_bed(rna,data_df):
         rna: (str) The name of the RNA in the name2 column
         data_df: (Pandas DataFrame) The UCSC dataframe from text_to_df
     """
-    bed = kn.get_all_paths(rna,data_df,detail=True)
+    bed = get_all_paths(rna,data_df,detail=True)
     ostrich = ''
     realinfo = ''
     ncount = 1
