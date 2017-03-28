@@ -35,6 +35,7 @@ def go_to_bed(rna,data_df):
             f1 = open(finfo,'w')
             f1.write(realinfo)
             f1.close()
+            realinfo = ''
             
         else:
             pathdet = path[4:]
@@ -52,4 +53,5 @@ def go_to_bed(rna,data_df):
         f = open(fname,'w')
         f.write(ostrich)
         f.close()
+        ostrich = ''
         
