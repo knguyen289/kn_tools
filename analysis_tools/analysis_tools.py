@@ -46,7 +46,10 @@ def go_to_bed(rna,raw):
             start = str(exon[0])
             end = str(exon[1])
             info = [chrom,start,end,name,'score',strand]
-            ostrich += '\t'.join(info) + '\n'
+            if strand == '+':
+                ostrich += '\t'.join(info) + '\n'
+            else:
+                ostrich = '\t'.join(info) + '\n' + ostrich
             
         fname = rna + '_bed' + '_' + str(ncount) + '.txt'
         ncount += 1
