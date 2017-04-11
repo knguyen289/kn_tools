@@ -8,7 +8,7 @@ def go_to_bed(rna,raw):
 
     Parameters:
         rna: (str) The name of the RNA in the name2 column
-        raw: (str) File location of USCS data
+        raw: (str) File location of UCSC data
     """
     data_df = text_to_df(raw)
     bed = get_all_paths(rna,data_df,detail=True)

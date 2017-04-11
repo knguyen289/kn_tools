@@ -336,5 +336,5 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **rna:** *(str)* The name of the RNA in the name2 column
 
-* **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
+* **raw:** *(str)* File location of UCSC data
 
