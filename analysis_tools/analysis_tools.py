@@ -11,7 +11,7 @@ def go_to_bed(rna,raw):
         raw: (str) File location of UCSC data
     """
     data_df = text_to_df(raw)
-    bed = get_all_paths(rna,data_df,detail=True)
+    paths = get_all_paths(rna,data_df,detail=True)
     ostrich = ''
     realinfo = ''
     ncount = 1
@@ -24,7 +24,7 @@ def go_to_bed(rna,raw):
     rnadir = rna + 'bed' + str(fcount) + '/'
     infodir = rna + 'bedinfo' + str(fcount) + '/'
     
-    for path in bed:
+    for path in paths:
         name = path[0]
         strand = path[1]
         chrom = path[2]
