@@ -360,6 +360,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **bases:** *(str)* The string of A,T,G,C from the bed file
 
+* **mod:** *(int)* Integer 0, 1, 2 depending on the actual start and stop
+
 #### Returns:
 * **atg_inds:** *(list of int)* The possible cdsStarts in sequence coordinates
 * **stop_inds:** *(list of int)* The possible cdsEnds in sequence coordinates

@@ -84,24 +84,26 @@ def seq_index(ind,nodes,strand):
                 return to_return
             else:
                 print 'Error: Invalid exon nodes'
-                return 0
+                return None
             
     else:
-        for j in range(len(nodes)-1,0,2):
+        for j in range(len(nodes)-1,0,-2):
             if nodes[j-1] > ind:
                 to_return += nodes[j] - nodes[j-1]
-            elif nodes[j] > ind:
+            elif nodes[j] >= ind:
                 to_return += nodes[j] - ind
                 return to_return
             else:
                 print 'Error: Invalid exon nodes'
-                return 0
+                return None
+            
 
-def regex_possible(bases):
+def regex_possible(bases,mod):
     """Gets the location of all possible start and end codons
 
     Parameters:
         bases: (str) The string of A,T,G,C from the bed file
+        mod: (int) Integer 0, 1, 2 depending on the actual start and stop
 
     Returns:
         atg_inds: (list of int) The possible cdsStarts in sequence coordinates
@@ -112,12 +114,14 @@ def regex_possible(bases):
     
     atg_inds = []
     for item in starts:
-        atg_inds.append(item.span(2))
+        if item.span(2)[0] % 3 == mod:
+            atg_inds.append(item.span(2))
     atg_inds = list(set(atg_inds))
 
     stop_inds = []
     for item in stops:
-        stop_inds.append(item.span(2))
+        if item.span(2)[1] % 3 == mod:
+            stop_inds.append(item.span(2))
     stop_inds = list(set(stop_inds))
     
     atg_inds = sorted([item[0] for item in atg_inds])
