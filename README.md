@@ -338,3 +338,28 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **raw:** *(str)* File location of UCSC data
 
+
+### seq_index()
+#### Description:
+* Convert ind from genomic to sequence coordinates based on nodes and strand
+
+#### Parameters:
+* **ind:** *(int)* The genomic coordinate, usually a long number from UCSC browser
+
+* **nodes:** *(list of int)* The genomic coordinates of the exons start/ends
+
+* **strand:** *(str)* + or - depending on the transcript
+
+#### Returns:
+* **to_return:** *(int)* The sequence coordinate
+
+### regex_possible()
+#### Description:
+* Gets the location of all possible start and end codons
+
+#### Parameters:
+* **bases:** *(str)* The string of A,T,G,C from the bed file
+
+#### Returns:
+* **atg_inds:** *(list of int)* The possible cdsStarts in sequence coordinates
+* **stop_inds:** *(list of int)* The possible cdsEnds in sequence coordinates
