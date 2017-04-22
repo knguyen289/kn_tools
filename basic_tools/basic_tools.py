@@ -91,12 +91,16 @@ def adj_df(df,mef,p_c,p_m):
     
     return redact_df(return_df,types)
     
-def text_to_df(filename,index=None):
-    """Converts a text file that is tab delimited with first row being header to Pandas DataFrame
+def text_to_df(filename,index=None,sep='\t'):
+    """Converts a text file that is delimited with first row being header to Pandas DataFrame
 
     Parameters:
         filename: (str) The location of the text file
         index: (str) The column that can be used as an index [Optional]
+        sep: (str) The separator used in the file
+
+    Returns:
+        df: (Pandas Dataframe) The desired dataframe
     """
     f = open(filename,'r')
     data = []
@@ -104,10 +108,10 @@ def text_to_df(filename,index=None):
     for line in f:
         line = line.rstrip()
         if len(head) == 0:
-            head = line.split('\t')
+            head = line.split(sep)
             
         else:
-            data.append(line.split('\t'))
+            data.append(line.split(set))
 
     df = pd.DataFrame(data,columns=head)
     if index != None:

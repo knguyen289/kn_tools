@@ -58,13 +58,17 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ### text_to_df()
 #### Description:
-* Converts a text file that is tab delimited with first row being header to Pandas DataFrame
+* Converts a text file that is delimited with first row being header to Pandas DataFrame
 
 #### Parameters:
 * **filename:** *(str)* The location of the text file
 
 * **index:** *(str)* The column that can be used as an index [Optional]
 
+* **sep:** *(str)* The separator used in the file
+
+#### Returns:
+* **df:** *(Pandas Dataframe)* The desired dataframe
 
 ### trieuclid()
 #### Description:
