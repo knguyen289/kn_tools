@@ -111,7 +111,7 @@ def text_to_df(filename,index=None,sep='\t'):
             head = line.split(sep)
             
         else:
-            data.append(line.split(set))
+            data.append(line.split(sep))
 
     df = pd.DataFrame(data,columns=head)
     if index != None:
