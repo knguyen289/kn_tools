@@ -96,35 +96,43 @@ def seq_index(ind,nodes,strand):
             else:
                 print 'Error: Invalid exon nodes'
                 return None
-            
 
-def regex_possible(bases,mod):
-    """Gets the location of all possible start and end codons
+
+def fetch_coords(seq):
+    """Gets the location of the start and stop codon
 
     Parameters:
-        bases: (str) The string of A,T,G,C from the bed file
-        mod: (int) Integer 0, 1, 2 depending on the actual start and stop
+        seq: (str) The string of A,T,G,C from the bed file
 
     Returns:
-        atg_inds: (list of int) The possible cdsStarts in sequence coordinates
-        stop_inds: (list of int) The possible cdsEnds in sequence coordinates
+        se: (list of 2 int) first value is the start, second value is the stop
     """
-    starts = list(re.finditer('(...)+?(ATG)(...)+?',bases,overlapped=True))
-    stops = list(re.finditer('(...)+?(TAG|TAA|TGA)(...)+?',bases,overlapped=True))
+    starts = list(re.finditer('.*?(ATG).*?',seq,overlapped=True))
+    stops = list(re.finditer('.*?(TAG|TAA|TGA).*?',seq,overlapped=True))
     
-    atg_inds = []
-    for item in starts:
-        if item.span(2)[0] % 3 == mod:
-            atg_inds.append(item.span(2))
-    atg_inds = list(set(atg_inds))
-
-    stop_inds = []
-    for item in stops:
-        if item.span(2)[1] % 3 == mod:
-            stop_inds.append(item.span(2))
-    stop_inds = list(set(stop_inds))
+    pairs = []
     
-    atg_inds = sorted([item[0] for item in atg_inds])
-    stop_inds = sorted([item[1] for item in stop_inds])
-    return atg_inds,stop_inds
+    starts = sorted(list(set([item.span(0)[1]-3 for item in starts])))
+    stops = sorted(list(set([item.span(0)[1] for item in stops])))
+    
+    temp_i = []
+    temp_j = []
+    temp_diffs = []
+    
+    for i in range(len(starts)):
+        mod = starts[i] % 3
+        
+        j = 0
+        while j >= 0 and j < len(stops):
+            if stops[j] > starts[i]:
+                if stops[j] % 3 == mod:
+                    temp_i.append(i)
+                    temp_j.append(j)
+                    temp_diffs.append(stops[j]-starts[i])
+                    j = len(stops) + 1
+            j += 1
+    
+    ind = temp_diffs.index(max(temp_diffs))
+    se = [starts[temp_i[ind]],stops[temp_j[ind]]]
+    return se
         
