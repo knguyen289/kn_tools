@@ -1,5 +1,5 @@
 import os
-import regex as re
+import re
 
 from kn_tools.basic_tools import text_to_df
 from kn_tools.rna_path_tools import get_all_paths
