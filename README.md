@@ -357,15 +357,12 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Returns:
 * **to_return:** *(int)* The sequence coordinate
 
-### regex_possible()
+### fetch_coords()
 #### Description:
-* Gets the location of all possible start and end codons
+* Gets the location of the start and stop codon
 
 #### Parameters:
-* **bases:** *(str)* The string of A,T,G,C from the bed file
-
-* **mod:** *(int)* Integer 0, 1, 2 depending on the actual start and stop
+* **seq:** *(str)* The string of A,T,G,C from the bed file
 
 #### Returns:
-* **atg_inds:** *(list of int)* The possible cdsStarts in sequence coordinates
-* **stop_inds:** *(list of int)* The possible cdsEnds in sequence coordinates
+* **se:** *(list of 2 int)* first value is the start, second value is the stop
