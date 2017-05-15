@@ -107,8 +107,8 @@ def fetch_coords(seq):
     Returns:
         se: (list of 2 int) first value is the start, second value is the stop
     """
-    starts = list(re.finditer('.*?(ATG).*?',seq,overlapped=True))
-    stops = list(re.finditer('.*?(TAG|TAA|TGA).*?',seq,overlapped=True))
+    starts = list(re.finditer('.*?(ATG).*?',seq))
+    stops = list(re.finditer('.*?(TAG|TAA|TGA).*?',seq))
     
     pairs = []
     
