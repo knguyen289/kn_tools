@@ -107,13 +107,12 @@ def fetch_coords(seq):
     Returns:
         se: (list of 2 int) first value is the start, second value is the stop
     """
-    starts = list(re.finditer('.*?(ATG).*?',seq))
-    stops = list(re.finditer('.*?(TAG|TAA|TGA).*?',seq))
+    matches = list(re.finditer('(ATG)(...)*?(TAG|TAA|TGA).*?',seq))
     
     pairs = []
     
-    starts = sorted(list(set([item.span(0)[1]-3 for item in starts])))
-    stops = sorted(list(set([item.span(0)[1] for item in stops])))
+    starts = sorted(list(set([item.span(1)[0] for item in matches])))
+    stops = sorted(list(set([item.span(3)[1] for item in matches])))
     
     temp_i = []
     temp_j = []
