@@ -79,7 +79,7 @@ def seq_index(ind,nodes,strand):
         for j in range(0,len(nodes)-1,2):
             if nodes[j+1] < ind:
                 to_return += nodes[j+1] - nodes[j]
-            elif nodes[j] < ind:
+            elif nodes[j] <= ind:
                 to_return += ind - nodes[j]
                 return to_return
             else:
@@ -96,6 +96,37 @@ def seq_index(ind,nodes,strand):
             else:
                 print 'Error: Invalid exon nodes'
                 return None
+
+
+def gene_index(ind,nodes,strand):
+    """Convert ind from sequence to genomic coordinates based on nodes and strand
+    
+    Parameters:
+        ind: (int) The sequence coordinate, usually a long number from UCSC browser
+        nodes: (list of int) The genomic coordinates of the exons start/ends
+        strand: (str) + or - depending on the transcript
+
+    Returns:
+        to_return: (int) The genomic coordinate
+    """
+    running = int(ind)
+    nodes = map(int,nodes)
+    
+    if strand == '+':
+        for i in range(0,len(nodes)-1,2):
+            if nodes[i+1] - nodes[i] < running:
+                running -= nodes[i+1] - nodes[i]
+            else:
+                to_return = running + nodes[i]
+                return to_return
+    else:
+        for i in range(len(nodes)-1,0,-2):
+            if nodes[i] - nodes[i-1] < running:
+                running -= nodes[i] - nodes[i-1]
+            else:
+                to_return = nodes[i] - running
+                return to_return
+
 
 
 def fetch_coords(seq):

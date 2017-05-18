@@ -357,6 +357,20 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Returns:
 * **to_return:** *(int)* The sequence coordinate
 
+### gene_index()
+#### Description:
+* Convert ind from sequence to genomic coordinates based on nodes and strand
+
+#### Parameters:
+* **ind:** *(int)* The sequence coordinate, usually a long number from UCSC browser
+
+* **nodes:** *(list of int)* The genomic coordinates of the exons start/ends
+
+* **strand:** *(str)* + or - depending on the transcript
+
+#### Returns:
+* **to_return:** *(int)* The genomic coordinate
+
 ### fetch_coords()
 #### Description:
 * Gets the location of the start and stop codon
