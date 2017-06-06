@@ -73,46 +73,47 @@ def get_lookup1(df):
 	return lookup_df
 
 def get_lookup2(df):
-	"""Gets the second lookup table for the given RNA DataFrame produced by get_rna_dfs
-	
-	Parameters:
-		df: (Pandas DataFrame) The RNA DataFrame produced by get_rna_dfs
-		
-	Returns:
-		lu2: (Pandas DataFrame) The second lookup table, masks the multiple splice sites as different exons
-	"""
-	lu1_df = get_lookup1(df)
-	info = []
-	
-	for index,row in lu1_df.iterrows():
-		if lu1_df.loc[index,'#'] == 1:
-			info.append([str(index)] + map(int,[row.get_value('starts'),row.get_value('ends')]))
-		else:
-			starts = map(int,row.get_value('starts').split(','))
-			ends = map(int,row.get_value('ends').split(','))
-			uniq = sorted(list(set(starts+ends)))
-			
-			exons = [(starts[i],ends[i]) for i in range(len(starts))]
-			
-			exons = np.array(exons,dtype=[('s',int),('e',int)])
-			exons = np.sort(exons,order=['s','e'])
-			exons = list(exons)
-			
-			for i in range(len(exons)):
-				temp = []
-				s_ind = uniq.index(exons[i][0])+1
-				e_ind = uniq.index(exons[i][1])+1
-				
-				temp.append(str(index)+'.'+str(s_ind)+'.'+str(e_ind))
-				temp.append(exons[i][0])
-				temp.append(exons[i][1])
-				temp.append((exons[i][1]-exons[i][0]) % 3)
-				info.append(temp)
-				
-	lu2 = pd.DataFrame(info,columns=['exon','start','end','mod'])
-	lu2.index = np.arange(1, len(lu2) + 1)
-	lu2.index.name = 'pseudoexon'
-	return lu2
+    """Gets the second lookup table for the given RNA DataFrame produced by get_rna_dfs
+    
+    Parameters:
+        df: (Pandas DataFrame) The RNA DataFrame produced by get_rna_dfs
+        
+    Returns:
+        lu2: (Pandas DataFrame) The second lookup table, masks the multiple splice sites as different exons
+    """
+    lu1_df = get_lookup1(df)
+    info = []
+    
+    for index,row in lu1_df.iterrows():
+        if lu1_df.loc[index,'#'] == 1:
+            se = map(int,[row.get_value('starts'),row.get_value('ends')])
+            info.append([str(index)] + se + [(se[1] - se[0]) % 3])
+        else:
+            starts = map(int,row.get_value('starts').split(','))
+            ends = map(int,row.get_value('ends').split(','))
+            uniq = sorted(list(set(starts+ends)))
+            
+            exons = [(starts[i],ends[i]) for i in range(len(starts))]
+            
+            exons = np.array(exons,dtype=[('s',int),('e',int)])
+            exons = np.sort(exons,order=['s','e'])
+            exons = list(exons)
+            
+            for i in range(len(exons)):
+                temp = []
+                s_ind = uniq.index(exons[i][0])+1
+                e_ind = uniq.index(exons[i][1])+1
+                
+                temp.append(str(index)+'.'+str(s_ind)+'.'+str(e_ind))
+                temp.append(exons[i][0])
+                temp.append(exons[i][1])
+                temp.append((exons[i][1]-exons[i][0]) % 3)
+                info.append(temp)
+                
+    lu2 = pd.DataFrame(info,columns=['exon','start','end','mod'])
+    lu2.index = np.arange(1, len(lu2) + 1)
+    lu2.index.name = 'pseudoexon'
+    return lu2
 
 def get_pexons(df,lu_df=[]):
 	"""Gets the psuedoexons for the given RNA DataFrame produced by get_rna_dfs
