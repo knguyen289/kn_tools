@@ -306,6 +306,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Returns:
 * **strand_nodes:** *(list)* A list of the psuedoexons for conversion to a graph
+* **detailed:** *(list)* includes the real cdsStart and cdsEnd for a strand
+* **names:** *(list)* includes the strand name
 
 ### get_graph()
 #### Description:
