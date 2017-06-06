@@ -106,8 +106,10 @@ def get_lookup2(df):
 				temp.append(str(index)+'.'+str(s_ind)+'.'+str(e_ind))
 				temp.append(exons[i][0])
 				temp.append(exons[i][1])
+				temp.append((exons[i][1]-exons[i][0]) % 3)
 				info.append(temp)
-	lu2 = pd.DataFrame(info,columns=['exon','start','end'])
+				
+	lu2 = pd.DataFrame(info,columns=['exon','start','end','mod'])
 	lu2.index = np.arange(1, len(lu2) + 1)
 	lu2.index.name = 'pseudoexon'
 	return lu2
@@ -121,6 +123,8 @@ def get_pexons(df,lu_df=[]):
 	
 	Returns:
 		strand_nodes: (list) A list of the psuedoexons for conversion to a graph
+		detailed: (list) includes the real cdsStart and cdsEnd for a strand
+		names: (list) includes the strand name
 	"""
 	if len(lu_df) == 0:
 		lu_df = get_lookup2(df)
