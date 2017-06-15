@@ -165,4 +165,49 @@ def fetch_coords(seq):
     ind = temp_diffs.index(max(temp_diffs))
     se = [starts[temp_i[ind]],stops[temp_j[ind]]]
     return se
+
+def set_flags(ss_df):
+    """ Calculates number of bases to the last junction and exons from end in the startstop DataFrame
+    
+    Parameters:
+        ss_df: (Pandas DataFrame) The outputted DataFrame from startstop.py with the added columns 'exonsFromEnd', 'basesFromJunct', 'exists', 'theorized_nmd', 'erroneous_nmd' if in last exon, 'basesFromJunct' is -1, 'exists', 'theorized_nmd', 'erroneous_nmd' are 0 and 1 boolean value
+    
+    Returns:
+        new_df: (Pandas DataFrame) ss_df updated with the aforementioned data
+    """
+    new_df = copy.deepcopy(ss_df)
+    for index,row in new_df.iterrows():
+        seq_nodes = map(int,row.get_value('seqNodes').split(','))
+        
+        if row.get_value('strand') == '+':
+            end = int(row.get_value('regexEnd'))
+            i1 = len(seq_nodes) - 1
+            i2 = 0
+            s = -2
+        else:
+            end = int(row.get_value('regexStart'))
+            i1 = 0
+            i2 = len(seq_nodes) - 1
+            s = 2
+        
+        junct = i1+s/2
+        dist = ''
+        excount = 0
+        for i in range(i1,i2,s):
+            ex_test = sorted([seq_nodes[i],seq_nodes[i + s/2]])
+            
+            if seq_nodes[i+s/2] <= end and end < seq_nodes[i]:
+                dist = abs(seq_nodes[junct] - end)
+                if excount == 0:
+                    dist = -1
+                break
+            excount += 1
+        
+        new_df.loc[index,'exonsFromEnd'] = excount
+        new_df.loc[index,'basesFromJunct'] = dist
+
+        if row.get_value('basesFromJunct') >= 50:
+            new_df.loc[index,'theorized_nmd'] = 1
+        new_df.loc[index,'erroneous_nmd'] = (row.get_value('exists') + row.get_value('theorized_nmd') + 1) % 2
+    return new_df
         

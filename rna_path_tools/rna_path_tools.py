@@ -126,6 +126,7 @@ def get_pexons(df,lu_df=[]):
 		strand_nodes: (list) A list of the psuedoexons for conversion to a graph
 		detailed: (list) includes the real cdsStart and cdsEnd for a strand
 		names: (list) includes the strand name
+		indexes: (list) list of the dataframe index
 	"""
 	if len(lu_df) == 0:
 		lu_df = get_lookup2(df)
@@ -133,6 +134,7 @@ def get_pexons(df,lu_df=[]):
 	detailed = []
 	names = []
 	strand_nodes = []
+	indexes = []
 	for index,row in df.iterrows():
 		s = map(int,row.get_value('exonStarts')[:-1].split(','))
 		e = map(int,row.get_value('exonEnds')[:-1].split(','))
@@ -157,8 +159,9 @@ def get_pexons(df,lu_df=[]):
 		detailed.append(map(int,[df.loc[index,'cdsStart'],df.loc[index,'cdsEnd']]))
 		names.append(df.loc[index,'name'])
 		strand_nodes.append(pnodes)
+		indexes.append(index)
 		
-	return strand_nodes,detailed,names
+	return strand_nodes,detailed,names,indexes
 
 def get_graph(strand_nodes):
 	"""Gets the graph for a given list of nodes
