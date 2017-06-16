@@ -10,6 +10,9 @@ def go_to_bed(rna,raw):
     Parameters:
         rna: (str) The name of the RNA in the name2 column
         raw: (str) File location of UCSC data
+
+    Returns:
+        fcount: (int) The ID of the directory
     """
     data_df = text_to_df(raw)
     paths = get_all_paths(rna,data_df,detail=True)
@@ -60,6 +63,8 @@ def go_to_bed(rna,raw):
         f.write(ostrich)
         f.close()
         ostrich = ''
+
+        return fcount
 
 def seq_index(ind,nodes,strand):
     """Convert ind from genomic to sequence coordinates based on nodes and strand
