@@ -65,7 +65,7 @@ def go_to_bed(rna,raw):
         f.close()
         ostrich = ''
 
-        return fcount
+    return fcount
 
 def seq_index(ind,nodes,strand):
     """Convert ind from genomic to sequence coordinates based on nodes and strand
