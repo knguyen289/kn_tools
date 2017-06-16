@@ -196,7 +196,7 @@ def get_all_paths(rna,data_df,detail=False):
 	paths = []
 	for df in dfs:
 		lu_df = get_lookup2(df)
-		pnodes,pdetailed,names = get_pexons(df,lu_df)
+		pnodes,pdetailed,names,indexes = get_pexons(df,lu_df)
 		index = list(df.index)[0]
 		strand = df.loc[index,'strand']
 		chrom = df.loc[index,'chrom']
