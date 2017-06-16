@@ -183,7 +183,7 @@ def set_flags(ss_df):
     """
     new_df = copy.deepcopy(ss_df)
     for index,row in new_df.iterrows():
-        seq_nodes = map(int,row.get_value('seqNodes').split(','))
+        seq_nodes = map(int,str(row.get_value('seqNodes')).split(','))
         
         if row.get_value('strand') == '+':
             end = int(row.get_value('regexEnd'))
