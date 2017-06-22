@@ -277,7 +277,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ### get_lookup1()
 #### Description:
-* Gets the first lookup table for the given RNA DataFrame produced by get_rna_dfs
+* Gets the first lookup table for the given RNA DataFrame produced by get_rna_dfs. UPDATE 6/22/17 - Accomodated for minus strands
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
@@ -287,7 +287,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ### get_lookup2()
 #### Description:
-* Gets the second lookup table for the given RNA DataFrame produced by get_rna_dfs
+* Gets the second lookup table for the given RNA DataFrame produced by get_rna_dfs. UPDATE 6/22/17 - Accomodated for minus strands
 
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The RNA DataFrame produced by get_rna_dfs
@@ -308,6 +308,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **strand_nodes:** *(list)* A list of the psuedoexons for conversion to a graph
 * **detailed:** *(list)* includes the real cdsStart and cdsEnd for a strand
 * **names:** *(list)* includes the strand name
+* **indexes:** *(list)* list of the dataframe index
 
 ### get_graph()
 #### Description:
@@ -344,6 +345,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **raw:** *(str)* File location of UCSC data
 
+#### Returns:
+* **fcount:** *(int)* The ID of the directory
 
 ### seq_index()
 #### Description:
@@ -382,3 +385,13 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Returns:
 * **se:** *(list of 2 int)* first value is the start, second value is the stop
+
+### set_flags()
+#### Description:
+*  Calculates number of bases to the last junction and exons from end in the startstop DataFrame
+
+#### Parameters:
+* **ss_df:** *(Pandas DataFrame)* The outputted DataFrame from startstop.py with the added columns 'exonsFromEnd', 'basesFromJunct', 'exists', 'theorized_nmd', 'erroneous_nmd' if in last exon, 'basesFromJunct' is -1, 'exists', 'theorized_nmd', 'erroneous_nmd' are 0 and 1 boolean value
+
+#### Returns:
+* **new_df:** *(Pandas DataFrame)* ss_df updated with the aforementioned data
