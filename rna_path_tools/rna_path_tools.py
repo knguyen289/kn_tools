@@ -156,17 +156,24 @@ def get_pexons(df,lu_df=[]):
 	strand_nodes = []
 	indexes = []
 	for index,row in df.iterrows():
+		print row
 		s = map(int,row.get_value('exonStarts')[:-1].split(','))
 		e = map(int,row.get_value('exonEnds')[:-1].split(','))
 		exons = [[s[i],e[i]] for i in range(len(s))]
-		print exons
 		
 		pnodes = []
 		nodes = []
 		
-		for exon in exons:
+		if row.get_value('strand') == '+':
+			order = range(0,len(exons))
+		else:
+			order = range(len(exons)-1,-1,-1)
+		for i in order:
+			print exons[i]
+			exon = exons[i]
 			unset = True
 			while unset:
+				print pnodes
 				if len(pnodes) == 0:
 					i1 = 1
 				else:
@@ -217,7 +224,9 @@ def get_all_paths(rna,data_df,detail=False):
 	paths = []
 	for df in dfs:
 		lu_df = get_lookup2(df)
+		print lu_df
 		pnodes,pdetailed,names,indexes = get_pexons(df,lu_df)
+		print pnodes
 		index = list(df.index)[0]
 		strand = df.loc[index,'strand']
 		chrom = df.loc[index,'chrom']

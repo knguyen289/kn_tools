@@ -16,7 +16,10 @@ def go_to_bed(rna,raw):
         fcount: (int) The ID of the directory
     """
     data_df = text_to_df(raw)
+    print 'hi'
     paths = get_all_paths(rna,data_df,detail=True)
+    print paths
+    print ''
     ostrich = ''
     realinfo = ''
     ncount = 1
