@@ -16,10 +16,7 @@ def go_to_bed(rna,raw):
         fcount: (int) The ID of the directory
     """
     data_df = text_to_df(raw)
-    print 'hi'
     paths = get_all_paths(rna,data_df,detail=True)
-    print paths
-    print ''
     ostrich = ''
     realinfo = ''
     ncount = 1
@@ -51,13 +48,13 @@ def go_to_bed(rna,raw):
             pathdet = path[4:]
             
         for exon in pathdet:
-            start = str(exon[0])
-            end = str(exon[1])
+            start = str(int(exon[0]))
+            end = str(int(exon[1]))
             info = [chrom,start,end,name,'score',strand]
-            if strand == '+':
-                ostrich += '\t'.join(info) + '\n'
-            else:
-                ostrich = '\t'.join(info) + '\n' + ostrich
+            #if strand == '+':
+            ostrich += '\t'.join(info) + '\n'
+            #else:
+                #ostrich = '\t'.join(info) + '\n' + ostrich
             
         fname = rna + '_bed' + '_' + str(ncount) + '.txt'
         ncount += 1
@@ -186,7 +183,7 @@ def set_flags(ss_df):
     """
     new_df = copy.deepcopy(ss_df)
     for index,row in new_df.iterrows():
-        seq_nodes = map(int,str(row.get_value('seqNodes')).split(','))
+        seq_nodes = sorted(map(int,str(row.get_value('seqNodes')).split(',')))
         
         if row.get_value('strand') == '+':
             end = int(row.get_value('regexEnd'))
@@ -202,10 +199,11 @@ def set_flags(ss_df):
         junct = i1+s/2
         dist = ''
         excount = 0
+        
         for i in range(i1,i2,s):
             ex_test = sorted([seq_nodes[i],seq_nodes[i + s/2]])
             
-            if seq_nodes[i+s/2] <= end and end < seq_nodes[i]:
+            if ex_test[0] <= end and end < ex_test[1]:
                 dist = abs(seq_nodes[junct] - end)
                 if excount == 0:
                     dist = -1
