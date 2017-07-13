@@ -199,11 +199,12 @@ def set_flags(ss_df):
         junct = i1+s/2
         dist = ''
         excount = 0
-        
+
         for i in range(i1,i2,s):
             ex_test = sorted([seq_nodes[i],seq_nodes[i + s/2]])
             
-            if ex_test[0] <= end and end < ex_test[1]:
+            # If the sequence coordinates of the end lie in the sequence exon of the ends exon
+            if ex_test[0] < end and end <= ex_test[1]:
                 dist = abs(seq_nodes[junct] - end)
                 if excount == 0:
                     dist = -1

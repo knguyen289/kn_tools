@@ -11,17 +11,15 @@ def get_rna_dfs(rna,data_df):
 		data_df: (Pandas DataFrame) The UCSC dataframe from text_to_df
 	
 	Returns:
-		dfs: (list) A list of one or two filtered Pandas DataFrames, one for each strand
+		temp_df: (Pandas DataFrame) Filtered DataFrame, returns None if there is more than one strand defined
 	"""
-	temp_df = copy.deepcopy(data_df)
-	temp_df = temp_df[temp_df['name2'] == rna]
+	temp_df = data_df[data_df['name2'] == rna]
 
 	strands = list(set(temp_df['strand']))
-	dfs = []
-	for strand in strands:
-		strand_df = temp_df[temp_df['strand'] == strand]
-		dfs.append(strand_df)
-	return dfs
+	if len(strands) >= 2:
+		return None
+
+	return temp_df
 
 def get_lookup1(df):
 	"""Gets the first lookup table for the given RNA DataFrame produced by get_rna_dfs. UPDATE 6/22/17 - Accomodated for minus strands
@@ -156,30 +154,27 @@ def get_pexons(df,lu_df=[]):
 	strand_nodes = []
 	indexes = []
 	for index,row in df.iterrows():
-		s = map(int,row.get_value('exonStarts')[:-1].split(','))
-		e = map(int,row.get_value('exonEnds')[:-1].split(','))
+		s = sorted(map(int,row.get_value('exonStarts')[:-1].split(',')))
+		e = sorted(map(int,row.get_value('exonEnds')[:-1].split(',')))
 		exons = [[s[i],e[i]] for i in range(len(s))]
 		
 		pnodes = []
 		nodes = []
-		
+		lu_exons = [[lu_df.loc[j][1],lu_df.loc[j][2]] for j in range(1,len(lu_df)+1)]
+
 		if row.get_value('strand') == '+':
 			order = range(0,len(exons))
 		else:
 			order = range(len(exons)-1,-1,-1)
 		for i in order:
 			exon = exons[i]
-			unset = True
-			while unset:
-				if len(pnodes) == 0:
-					i1 = 1
-				else:
-					i1 = pnodes[-1]
-				for i in range(i1,len(lu_df)+1):
-					lu_ex = list(lu_df.loc[i])
-					if lu_ex[1] == exon[0] and lu_ex[2] == exon[1]:
-						pnodes.append(i)
-						unset = False
+
+			if exon in lu_exons:
+				pex_ind = lu_exons.index(exon)+1
+				pnodes.append(pex_ind)
+			else:
+				raise
+
 
 		detailed.append(map(int,[df.loc[index,'cdsStart'],df.loc[index,'cdsEnd']]))
 		names.append(df.loc[index,'name'])
@@ -215,35 +210,39 @@ def get_all_paths(rna,data_df,detail=False):
 		detail: (boolean) False if output is nodes, True for start and ends [Optional]
 	
 	Returns:
-		paths: (list) List of all paths produced
+		paths: (list) List of all paths produced, None if a strange rna
 	"""
-	dfs = get_rna_dfs(rna,data_df)
+	df = get_rna_dfs(rna,data_df)
+	if df == None:
+		return None
 	paths = []
-	for df in dfs:
-		lu_df = get_lookup2(df)
-		pnodes,pdetailed,names,indexes = get_pexons(df,lu_df)
-		index = list(df.index)[0]
-		strand = df.loc[index,'strand']
-		chrom = df.loc[index,'chrom']
-		G,se_pairs = get_graph(pnodes)
-		
-		for se in se_pairs:
-			for path in nx.all_simple_paths(G, source=se[0], target=se[1]):
-				path = list(path)
-				if path in pnodes:
-					if detail:
-						ind = pnodes.index(path)
-						irl = pdetailed[ind]
-						realname = names[ind]
-						paths.append([rna,strand,chrom,realname]+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path]+irl)
+	lu_df = get_lookup2(df)
+	print lu_df
+	pnodes,pdetailed,names,indexes = get_pexons(df,lu_df)
+	index = list(df.index)[0]
+	strand = df.loc[index,'strand']
+	chrom = df.loc[index,'chrom']
+	print pnodes
+	G,se_pairs = get_graph(pnodes)
+	
+	for se in se_pairs:
+		for path in nx.all_simple_paths(G, source=se[0], target=se[1]):
+			path = list(path)
+			print path
+			if path in pnodes:
+				if detail:
+					ind = pnodes.index(path)
+					irl = pdetailed[ind]
+					realname = names[ind]
+					paths.append([rna,strand,chrom,realname]+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path]+irl)
 
-					else:
-						paths.append([rna,strand,chrom,realname]+[lu_df.loc[item,'exon'] for item in path])
 				else:
-					if detail:
-						paths.append([rna,strand,chrom,' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
-					else:
-						paths.append([rna,strand,chrom,' ']+map(str,path))
+					paths.append([rna,strand,chrom,realname]+[lu_df.loc[item,'exon'] for item in path])
+			else:
+				if detail:
+					paths.append([rna,strand,chrom,' ']+[[lu_df.loc[item,'start'],lu_df.loc[item,'end']] for item in path])
+				else:
+					paths.append([rna,strand,chrom,' ']+map(str,path))
 				
 	return paths
 
