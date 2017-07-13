@@ -273,7 +273,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
 
 #### Returns:
-* **dfs:** *(list)* A list of one or two filtered Pandas DataFrames, one for each strand
+* **temp_df:** *(Pandas DataFrame)* Filtered DataFrame, returns None if there is more than one strand defined
 
 ### get_lookup1()
 #### Description:
@@ -333,7 +333,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **detail:** *(boolean)* False if output is nodes, True for start and ends [Optional]
 
 #### Returns:
-* **paths:** *(list)* List of all paths produced
+* **paths:** *(list)* List of all paths produced, None if a strange rna
 ## analysis_tools/analysis_tools.py
 
 ### go_to_bed()
