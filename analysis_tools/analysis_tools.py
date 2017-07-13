@@ -186,14 +186,9 @@ def set_flags(ss_df):
         seq_nodes = sorted(map(int,str(row.get_value('seqNodes')).split(',')))
         
         end = int(row.get_value('regexEnd'))
-        if row.get_value('strand') == '+':
-            i1 = len(seq_nodes) - 1
-            i2 = 0
-            s = -2
-        else:
-            i1 = 0
-            i2 = len(seq_nodes) - 1
-            s = 2
+        i1 = len(seq_nodes) - 1
+        i2 = 0
+        s = -2
         
         junct = i1+s/2
         dist = ''
@@ -217,4 +212,36 @@ def set_flags(ss_df):
             new_df.loc[index,'theorized_nmd'] = 1
         new_df.loc[index,'erroneous_nmd'] = (row.get_value('exists') + row.get_value('theorized_nmd') + 1) % 2
     return new_df
+
+def mutual_inf(pairs):
+    """Gets the mutual information for a list of boolean pairs
+
+    Parameters:
+        pairs: (list of int) List of boolean pairs, 0 false and 1 true used for inclusion and exclusion of exons
+
+    Returns:
+        total: (float) Mutual information calculated
+        detailed: (dictionary) Provides counts for each pairing (0,0), (1,1), (0,1), (1,0)
+    """
+    x = [item[0] for item in pairs]
+    y = [item[1] for item in pairs]
+    t = len(x)
+    total = 0
+    detailed = {}
+    for i in range(2):
+        for j in range(2):
+            p_xy = float(pairs.count((i,j)))/t
+            c_xy = pairs.count((i,j))
+            c_x = x.count(i)
+            c_y = y.count(i)
+            p_x = float(c_x)/t
+            p_y = float(c_y)/t
+            detailed[(i,j)] = c_xy
+            paren = p_xy / (p_x*p_y)
+            if int(paren) == 0:
+                element = 0
+            else:
+                element = p_xy*math.log(paren,2)
+            total += element
+    return total,detailed
         

@@ -213,7 +213,7 @@ def get_all_paths(rna,data_df,detail=False):
 		paths: (list) List of all paths produced, None if a strange rna
 	"""
 	df = get_rna_dfs(rna,data_df)
-	if df == None:
+	if df is None:
 		return None
 	paths = []
 	lu_df = get_lookup2(df)
