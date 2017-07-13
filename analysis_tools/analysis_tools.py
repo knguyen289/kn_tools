@@ -245,4 +245,34 @@ def mutual_inf(pairs):
                 element = p_xy*math.log(paren,2)
             total += element
     return total,detailed
+
+def get_splice_sites(mod_df):
+    """Gets the splice site information about a mod dataframe
+    
+    Parameters:
+        mod_df: (Pandas DataFrame) For one rna, the mod_df, must have strand and name2 columns
+    
+    Returns:
+        ss_df: (Pandas DataFrame) Includes the unique splice site info for the rna
+    """
+    ss_list = []
+    ss_set = []
+    for index,row in mod_df.iterrows():
+        mods = [row.get_value(col) for col in exon_cols]
+        nmd_ind = row.get_value('NMD_ind')
+        strand = row.get_value('strand')
+        for i in range(len(mods)-1,-1,-1):
+            if mods[i] != -1:
+                if strand == '+':
+                    coord = row.get_value('cdsEnd')
+                else:
+                    coord = row.get_value('cdsStart')
+                if not (coord,exon_cols[i],mods[i],nmd_ind) in ss_set:
+                    ss_list.append([coord,exon_cols[i],mods[i],nmd_ind])
+                    ss_set.append((coord,exon_cols[i],mods[i],nmd_ind))
+                break
+    ss_df = pd.DataFrame(ss_list,columns=['splice_site','pexon','frame','NMD_ind'])
+    ss_df.insert(0,'name2',row.get_value('name2'))
+    ss_df.insert(1,'strand',row.get_value('strand'))
+    return ss_df
         
