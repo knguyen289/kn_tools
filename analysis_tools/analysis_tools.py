@@ -185,13 +185,12 @@ def set_flags(ss_df):
     for index,row in new_df.iterrows():
         seq_nodes = sorted(map(int,str(row.get_value('seqNodes')).split(',')))
         
+        end = int(row.get_value('regexEnd'))
         if row.get_value('strand') == '+':
-            end = int(row.get_value('regexEnd'))
             i1 = len(seq_nodes) - 1
             i2 = 0
             s = -2
         else:
-            end = int(row.get_value('regexStart'))
             i1 = 0
             i2 = len(seq_nodes) - 1
             s = 2
