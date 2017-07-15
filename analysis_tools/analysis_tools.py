@@ -186,7 +186,7 @@ def set_flags(ss_df):
     for index,row in new_df.iterrows():
         seq_nodes = sorted(map(int,str(row.get_value('seqNodes')).split(',')))
         
-        end = int(row.get_value('regexEnd'))
+        end = int(row.get_value('regexStop'))
         i1 = len(seq_nodes) - 1
         i2 = 0
         s = -2
