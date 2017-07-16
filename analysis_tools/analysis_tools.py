@@ -214,14 +214,30 @@ def set_flags(ss_df):
         new_df.loc[index,'erroneous_nmd'] = (row.get_value('exists') + row.get_value('theorized_nmd') + 1) % 2
     return new_df
 
+def entropy(x):
+    """Gets the entropy for a list of boolean
+
+    Parameters:
+        x: (list of int) List of boolean, 0 false and 1 true used for inclusion and exclusion of exons
+
+    Returns:
+        H_x: (float) Entropy calculated
+    """
+    p = x.count(1) / float(len(x))
+    q = x.count(0) / float(len(x))
+    if p == 0 or q == 0:
+        return 0
+    H_x = -p*math.log(p,2) -q*math.log(q,2)
+    return H_x
+
 def mutual_inf(pairs):
-    """Gets the mutual information for a list of boolean pairs
+    """Gets the mutual information for a list of boolean pairs, uses I(X,Y) = H(X) + H(Y) - H(X,Y)
 
     Parameters:
         pairs: (list of int) List of boolean pairs, 0 false and 1 true used for inclusion and exclusion of exons
 
     Returns:
-        total: (float) Mutual information calculated
+        MI: (float) Mutual information calculated
         detailed: (dictionary) Provides counts for each pairing (0,0), (1,1), (0,1), (1,0)
     """
     x = [item[0] for item in pairs]
@@ -229,22 +245,20 @@ def mutual_inf(pairs):
     t = len(x)
     total = 0
     detailed = {}
+    H_x = entropy(x)
+    H_y = entropy(y)
+    H_xy = 0
     for i in range(2):
         for j in range(2):
             p_xy = float(pairs.count((i,j)))/t
             c_xy = pairs.count((i,j))
-            c_x = x.count(i)
-            c_y = y.count(i)
-            p_x = float(c_x)/t
-            p_y = float(c_y)/t
             detailed[(i,j)] = c_xy
-            paren = p_xy / (p_x*p_y)
-            if int(paren) == 0:
-                element = 0
+            if p_xy == 0:
+                H_xy += 0
             else:
-                element = p_xy*math.log(paren,2)
-            total += element
-    return total,detailed
+                H_xy += -p_xy*math.log(p_xy,2)
+    MI = H_x + H_y - H_xy
+    return MI,detailed
 
 def get_splice_sites(mod_df):
     """Gets the splice site information about a mod dataframe
