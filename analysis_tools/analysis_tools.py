@@ -2,6 +2,7 @@ import os
 import re
 import copy
 import math
+import pandas as pd
 
 from kn_tools.basic_tools import text_to_df
 from kn_tools.rna_path_tools import get_all_paths
@@ -271,6 +272,7 @@ def get_splice_sites(mod_df):
     """
     ss_list = []
     ss_set = []
+    exon_cols = list(mod_df.columns)[5:-1]
     for index,row in mod_df.iterrows():
         mods = [row.get_value(col) for col in exon_cols]
         nmd_ind = row.get_value('NMD_ind')
