@@ -20,9 +20,10 @@ def get_rna_dfs(rna,data_df):
 		return None
 
 	non_coding = []
-	for index,row in temp_df:
-		if int(temp_df.loc[index,'cdsStart']) == int(temp_df[index,'cdsEnd']):
-			non_coding += index
+	for index,row in temp_df.iterrows():
+		if int(row.get_value('cdsStart')) == int(row.get_value('cdsEnd')):
+			non_coding.append(index)
+
 	final_df = temp_df.drop(non_coding)
 
 	return final_df
