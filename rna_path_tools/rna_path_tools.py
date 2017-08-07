@@ -4,14 +4,14 @@ import networkx as nx
 import copy as copy
 
 def get_rna_dfs(rna,data_df):
-	"""Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes
+	"""Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes, drops non coding rna
 	
 	Parameters:
 		rna: (str) The name of the RNA in the name2 column
 		data_df: (Pandas DataFrame) The UCSC dataframe from text_to_df
 	
 	Returns:
-		temp_df: (Pandas DataFrame) Filtered DataFrame, returns None if there is more than one strand defined
+		final_df: (Pandas DataFrame) Filtered DataFrame, returns None if there is more than one strand defined
 	"""
 	temp_df = data_df[data_df['name2'] == rna]
 
@@ -19,7 +19,13 @@ def get_rna_dfs(rna,data_df):
 	if len(strands) >= 2:
 		return None
 
-	return temp_df
+	non_coding = []
+	for index,row in temp_df:
+		if int(temp_df.loc[index,'cdsStart']) == int(temp_df[index,'cdsEnd']):
+			non_coding += index
+	final_df = temp_df.drop(non_coding)
+
+	return final_df
 
 def get_lookup1(df):
 	"""Gets the first lookup table for the given RNA DataFrame produced by get_rna_dfs. UPDATE 6/22/17 - Accomodated for minus strands
