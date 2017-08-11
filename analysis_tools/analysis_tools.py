@@ -1,5 +1,5 @@
 import os
-import re
+import regex as re
 import copy
 import math
 import pandas as pd
@@ -146,7 +146,7 @@ def fetch_coords(seq):
     Returns:
         se: (list of 2 int) first value is the start, second value is the stop
     """
-    matches = list(re.finditer('(ATG)(...)*?(TAG|TAA|TGA).*?',seq))
+    matches = list(re.finditer('(ATG)(...)*?(TAG|TAA|TGA).*?',seq,overlapped=True))
     
     pairs = []
     
