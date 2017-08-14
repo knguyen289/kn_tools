@@ -44,7 +44,8 @@ def get_certain_mef(df,mef):
 
     Parameters:
         df: (Pandas DataFrame) The original DataFrame
-        mef: (str) The name of the mef, prefix before _cyt, _mem, _ins"""
+        mef: (str) The name of the mef, prefix before _cyt, _mem, _ins
+    """
     types = ['cyt','mem','ins']
     cs = [mef + '_' + t for t in types]
     return redact_df(df,cs)
@@ -57,7 +58,8 @@ def exp_err_adj(c,m,i,p_c,p_m):
         m = (float) Membrane experimental value
         i = (float) Insoluble experimental value
         p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
-        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1
+    """
     adj_c = c/p_c
     adj_m = m/p_m + (p_c-1)*adj_c
     adj_i = c + m + i - adj_c - adj_m
@@ -71,7 +73,8 @@ def adj_df(df,mef,p_c,p_m):
         df: (Pandas DataFrame) The experimentally derived DataFrame
         mef: (str) The MEF or prefix of columns [with suffix _ins and the like]
         p_c = (float) Proportion of actual cytosolic obtained, between 0 and 1
-        p_m = (float) Proportion of actual membrane obtained, between 0 and 1"""
+        p_m = (float) Proportion of actual membrane obtained, between 0 and 1
+    """
     return_df = copy.deepcopy(df)
     return_df.insert(len(return_df.columns),'cyt',0)
     return_df.insert(len(return_df.columns),'mem',0)
@@ -126,7 +129,8 @@ def trieuclid(df1,df2,d3):
     Parameters:
         df1: (Pandas Dataframe) The first MEF DataFrame
         df2: (Pandas Dataframe) The second MEF DataFrame
-        df3: (Pandas Dataframe) The third MEF DataFrame"""
+        df3: (Pandas Dataframe) The third MEF DataFrame
+    """
     genes = list(df1.index)
     mef = df1.columns[0].split('_')[0] + '_' + df1.columns[0].split('_')[1]
     c = 'cyt'

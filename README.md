@@ -29,6 +29,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 #### Parameters:
 * **df:** *(Pandas DataFrame)* The original DataFrame
 
+* **mef:** *(str)* The name of the mef, prefix before _cyt, _mem, _ins
+
 
 ### exp_err_adj()
 #### Description:
@@ -43,6 +45,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 * **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
 
+* **p_m =** *(float)* Proportion of actual membrane obtained, between 0 and 1
+
 
 ### adj_df()
 #### Description:
@@ -54,6 +58,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **mef:** *(str)* The MEF or prefix of columns [with suffix _ins and the like]
 
 * **p_c =** *(float)* Proportion of actual cytosolic obtained, between 0 and 1
+
+* **p_m =** *(float)* Proportion of actual membrane obtained, between 0 and 1
 
 
 ### text_to_df()
@@ -78,6 +84,8 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **df1:** *(Pandas Dataframe)* The first MEF DataFrame
 
 * **df2:** *(Pandas Dataframe)* The second MEF DataFrame
+
+* **df3:** *(Pandas Dataframe)* The third MEF DataFrame
 
 ## ternary_tools/ternary_tools.py
 
@@ -265,7 +273,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 ### get_rna_dfs()
 #### Description:
-* Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes
+* Filters the UCSC dataframe for a specified RNA in the name2 column, gives a list of one or two dataframes, drops non coding rna
 
 #### Parameters:
 * **rna:** *(str)* The name of the RNA in the name2 column
@@ -273,7 +281,7 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 * **data_df:** *(Pandas DataFrame)* The UCSC dataframe from text_to_df
 
 #### Returns:
-* **temp_df:** *(Pandas DataFrame)* Filtered DataFrame, returns None if there is more than one strand defined
+* **final_df:** *(Pandas DataFrame)* Filtered DataFrame, returns None if there is more than one strand defined
 
 ### get_lookup1()
 #### Description:
@@ -395,3 +403,34 @@ Kim Nguyen's tools for Wang Lab, includes tools for plotting and data management
 
 #### Returns:
 * **new_df:** *(Pandas DataFrame)* ss_df updated with the aforementioned data
+
+### entropy()
+#### Description:
+* Gets the entropy for a list of boolean
+
+#### Parameters:
+* **x:** *(list of int)* List of boolean, 0 false and 1 true used for inclusion and exclusion of exons
+
+#### Returns:
+* **H_x:** *(float)* Entropy calculated
+
+### mutual_inf()
+#### Description:
+* Gets the mutual information for a list of boolean pairs, uses I(X,Y) = H(X) + H(Y) - H(X,Y)
+
+#### Parameters:
+* **pairs:** *(list of int)* List of boolean pairs, 0 false and 1 true used for inclusion and exclusion of exons
+
+#### Returns:
+* **MI:** *(float)* Mutual information calculated
+* **detailed:** *(dictionary)* Provides counts for each pairing (0,0), (1,1), (0,1), (1,0)
+
+### get_splice_sites()
+#### Description:
+* Gets the splice site information about a mod dataframe
+
+#### Parameters:
+* **mod_df:** *(Pandas DataFrame)* For one rna, the mod_df, must have strand and name2 columns
+
+#### Returns:
+* **ss_df:** *(Pandas DataFrame)* Includes the unique splice site info for the rna
